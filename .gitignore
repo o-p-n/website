@@ -1,2 +1,4 @@
 .builder/
 .cache/docker/
+_site/
+node_modules/
