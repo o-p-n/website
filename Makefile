@@ -1,9 +1,11 @@
 PROJECT=website
+DOCKER_REPO_OWNER=linuxwolf
+DOCKER_CACHE=.cache/docker
 
-include ../image-builder/config.mk
-include ../image-builder/image.mk
+include .builder/main.mk
 
-.PHONY: image
+.builder/main.mk:
+	git clone -q https://github.com/o-p-n/image-builder.git -b main .builder
 
 image: linuxwolf/website
 
