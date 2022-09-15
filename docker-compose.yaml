@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  ingress:
+    image: docker.io/linuxwolf/caddy:2.5.2.6b78e270e42100250574e9a9dbed00b44ae1d9a6
+    deploy:
+      labels:
+        - "traefik.enable=true"
+        - "traeif.docker.network=public"
+        - "traefik.http.routers.website.rule=Host(`outer-planes.net`)"
+        - "traefik.http.routers.website.tls=true"
+        - "traefik.http.routers.website.tls.certresolver=letsencrypt"
+        - "traefik.http.routers.website.tls.domains[0].main=outer-planes.net"
+        - "traefik.http.routers.website.tls.domains[0].sans=*.outer-planes.net"
+        - "traefik.http.services.website.loadbalancer.server.port=80"
+      restart_policy:
+        condition: any
+    networks:
+      - public
+    ports:
+      - "80:80"
+
+networks:
+  public:
+    external: true
