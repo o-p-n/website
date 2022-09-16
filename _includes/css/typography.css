@@ -1,0 +1,8 @@
+@font-face {
+  font-family: Exocet;
+  src: url("/assets/exocet-light.woff");
+}
+
+html, body {
+  font-family: Exocet, Tahoma, Veranda, Arial, sans-serif;
+}

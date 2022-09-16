@@ -1,0 +1,7 @@
+.builder/
+.cache/docker/
+.git/
+_site/
+.gitignore
+Dockerfile
+node_modules/

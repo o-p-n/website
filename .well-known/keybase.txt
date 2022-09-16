@@ -1,0 +1,56 @@
+==================================================================
+https://keybase.io/linuxwolf
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of https://outer-planes.net
+  * I am linuxwolf (https://keybase.io/linuxwolf) on keybase.
+  * I have a public key ASDS7hB-avU8l4Wuj8aiHg4h77sEgkSDMoiHgVB9jHvU6Qo
+
+To do so, I am signing this object:
+
+{
+  "body": {
+    "key": {
+      "eldest_kid": "01013112e006f62e29b1b2e0ae17bf354248d0dc38fdeb637b92d65c8c6a9b76e3780a",
+      "host": "keybase.io",
+      "kid": "0120d2ee107e6af53c9785ae8fc6a21e0e21efbb0482448332888781507d8c7bd4e90a",
+      "uid": "2299a80ced34e930a2f780f0b545a000",
+      "username": "linuxwolf"
+    },
+    "merkle_root": {
+      "ctime": 1663286331,
+      "hash": "2d4e7db8dc285ef3db00cef5080f97e5ded4d63f487dac2fd357b90d668255f060a42485b9bc2b0a86df3d2a2ecc461370d59ccdcec6e742fbe9905c253fda01",
+      "hash_meta": "d88cd500f6000d709de96f3ef506f185c9c84122a29880b53530259122c01eda",
+      "seqno": 23203115
+    },
+    "service": {
+      "entropy": "IKJwJCa5BL+DEix/S5xaoJry",
+      "hostname": "outer-planes.net",
+      "protocol": "https:"
+    },
+    "type": "web_service_binding",
+    "version": 2
+  },
+  "client": {
+    "name": "keybase.io go client",
+    "version": "6.0.1"
+  },
+  "ctime": 1663286352,
+  "expire_in": 504576000,
+  "prev": "4f92c384839bd0e29b7331c54c6422885a6b88a0985f493dc45db187cee9d5b8",
+  "seqno": 135,
+  "tag": "signature"
+}
+
+which yields the signature:
+
+hKRib2R5hqhkZXRhY2hlZMOpaGFzaF90eXBlCqNrZXnEIwEg0u4Qfmr1PJeFro/Goh4OIe+7BIJEgzKIh4FQfYx71OkKp3BheWxvYWTES5cCzIfEIE+Sw4SDm9Dim3MxxUxkIohaa4igmF9JPcRdsYfO6dW4xCA3T1SqD5jzUTrlFLlwTjnSwsC7pRZjJ5ujxRnKEXvExwIBwqNzaWfEQDp4GWR9ALRDUxFY9ZLWuH0/jUeRE6t027PlhF80IA1CkRig03W4LuuZ0bSdV6J3XR5T+vnY/0WevA3eMOZViA6oc2lnX3R5cGUgpGhhc2iCpHR5cGUIpXZhbHVlxCBHXeElFvYeZQFpJQ2HgSLlcqlkgPGQ/ZJCXOdVO/3XwKN0YWfNAgKndmVyc2lvbgE=
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/linuxwolf
+
+==================================================================

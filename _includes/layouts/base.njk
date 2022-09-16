@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ title }}</title>
+    <meta charset="utf-8"/>
+    {% set style %}
+      {% include "../css/typography.css" %}
+    {% endset %}
+    <style>
+      {{ style | safe }}
+    </style>
+  </head>
+  <body>
+    {{ content | safe }}
+  </body>
+</html>

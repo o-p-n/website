@@ -1,8 +1,8 @@
 version: "3.9"
 
 services:
-  ingress:
-    image: docker.io/linuxwolf/caddy:2.5.2.6b78e270e42100250574e9a9dbed00b44ae1d9a6
+  server:
+    image: docker.io/linuxwolf/website:latest
     deploy:
       labels:
         - "traefik.enable=true"
@@ -17,8 +17,6 @@ services:
         condition: any
     networks:
       - public
-    ports:
-      - "80:80"
 
 networks:
   public:
