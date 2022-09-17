@@ -19,8 +19,6 @@ services:
         order: start-first
       restart_policy:
         condition: any
-    ports:
-      - 4000:4000
     networks:
       - public
 
