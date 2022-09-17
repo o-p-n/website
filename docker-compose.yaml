@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   server:
-    image: docker.io/linuxwolf/website:latest
+    image: linuxwolf/website:${STAMP:-latest}
     deploy:
       labels:
         - "traefik.enable=true"
@@ -12,7 +12,7 @@ services:
         - "traefik.http.routers.website.tls.certresolver=letsencrypt"
         - "traefik.http.routers.website.tls.domains[0].main=outer-planes.net"
         - "traefik.http.routers.website.tls.domains[0].sans=*.outer-planes.net"
-        - "traefik.http.services.website.loadbalancer.server.port=80"
+        - "traefik.http.services.website.loadbalancer.server.port=4000"
       restart_policy:
         condition: any
     networks:

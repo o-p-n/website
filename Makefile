@@ -1,6 +1,10 @@
 PROJECT=website
 DOCKER_REPO_OWNER=linuxwolf
-DOCKER_CACHE=.cache/docker
+DOCKER_CACHE=${HOME}/.cache/docker-buildx
+DOCKER_BUILDER=container-builder
+
+DOCKER_CONTEXT?=default
+STAMP?=latest
 
 include .builder/main.mk
 
@@ -10,3 +14,6 @@ include .builder/main.mk
 image: linuxwolf/website
 
 linuxwolf/website: Dockerfile
+
+publish: image
+	docker -c $(DOCKER_CONTEXT) stack deploy -c docker-compose.yaml $(PROJECT)
