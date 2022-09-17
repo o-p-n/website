@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   server:
-    image: linuxwolf/website:${STAMP:-latest}
+    image: ${DOCKER_REGISTRY:-localhost:5000}/linuxwolf/website:${STAMP:-latest}
     deploy:
       replicas: 2
       labels:
@@ -19,7 +19,8 @@ services:
         order: start-first
       restart_policy:
         condition: any
-
+    ports:
+      - 4000:4000
     networks:
       - public
 
