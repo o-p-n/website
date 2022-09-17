@@ -52,6 +52,7 @@ jobs:
   deploy:
     name: Deploy image
     runs-on: ubuntu-latest
+    needs: publish-image
     steps:
       -
         name: Checkout
@@ -73,7 +74,6 @@ jobs:
           SSH_KEY: ${{ secrets.DEPLOYMENT_SSH_KEY }}
       -
         name: Deploy stack
-        needs: publish-image
         run: |
           docker --host ssh://${SSH_USER}@outer-planes.net \
             stack deploy \
