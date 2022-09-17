@@ -1,0 +1,86 @@
+name: publish
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish-image:
+    name: Publish image
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Setup QEMU
+        uses: docker/setup-qemu-action@v2
+      - 
+        name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v1
+        with:
+          driver-opts: network=host
+      -
+        name: Signin to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      -
+        name: Setup Caching
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: buildx-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            buildx-${{ runner.os }}
+      -
+        name: Build & publish image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          tags: docker.io/${{ secrets.DOCKER_HUB_USERNAME }}/website:${{ github.sha }}
+          push: true
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+      -
+        name: Prune cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+  deploy:
+    name: Deploy image
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v3
+      -
+        name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${SSH_KEY}" > ~/.ssh/deploy.key
+          chmod 600 ~/.ssh/deploy.key
+          cat << ---END--- > ~/.ssh/config
+          Host *
+            User ${SSH_USER}
+            IdentityFile ~/.ssh/deploy.key
+            StrictHostKeyChecking no
+          ---END---
+        env:
+          SSH_USER: ${{ secrets.DEPLOYMENT_SSH_USERNAME }}
+          SSH_KEY: ${{ secrets.DEPLOYMENT_SSH_KEY }}
+      -
+        name: Deploy stack
+        needs: publish-image
+        run: |
+          docker --host ssh://${SSH_USER}@outer-planes.net \
+            stack deploy \
+            --compose-file docker-compose.yaml 
+            --prune \
+            website
+        env:
+          SSH_USER: ${{ secrets.DEPLOYMENT_SSH_USERNAME }}
+          STAMP: ${{ github.sha }}
+          DOCKER_REGISTRY: docker.io
