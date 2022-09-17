@@ -11,7 +11,6 @@ RUN npm ci
 COPY . /working
 RUN npx @11ty/eleventy
 
-FROM nginx:1.22.0 AS website
+FROM docker.io/linuxwolf/serveit:37212b3217b28fa943f520e5456bcea0cd7bfb56 AS website
 
 COPY --from=builder /working/_site /app/web
-COPY nginx.conf /etc/nginx/conf.d/default.conf
