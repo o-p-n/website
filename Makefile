@@ -16,4 +16,6 @@ image: linuxwolf/website
 linuxwolf/website: Dockerfile
 
 publish: image
+	STAMP=$(STAMP) \
+	DOCKER_REGISTRY=$(DOCKER_REGISTRY) \
 	docker -c $(DOCKER_CONTEXT) stack deploy -c docker-compose.yaml $(PROJECT)

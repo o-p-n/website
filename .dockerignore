@@ -5,4 +5,5 @@ _site/
 .gitignore
 Dockerfile
 docker-compose.yaml
+Makefile
 node_modules/
