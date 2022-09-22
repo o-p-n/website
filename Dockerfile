@@ -11,6 +11,6 @@ RUN npm ci
 COPY . /working
 RUN npx @11ty/eleventy
 
-FROM docker.io/linuxwolf/serveit:8b9558054d041741e7916a16327e78d585768905 AS website
+FROM docker.io/linuxwolf/serveit:de3717fea8da06b32e7476e9816aac03a8abef95 AS website
 
 COPY --from=builder /working/_site /app/web
