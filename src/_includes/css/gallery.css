@@ -1,0 +1,111 @@
+* {
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-headline);
+  font-weight: bold;
+  margin-block: 1.5rem 0.25rem;
+}
+
+h1 {
+  font-size: 3rem;
+  text-align: center;
+  margin-block: 1.5rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-size: 1.75rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+  font-style: italic;
+}
+
+h5 {
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+h6 {
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+p {
+  margin: 0px;
+  margin-block-end: 1rem;
+}
+p:last-child {
+  margin: 0px;
+}
+ol, ul {
+  margin-block: 1rem;
+  padding-inline-start: 2rem;;
+}
+
+code {
+  font-family: var(--font-monospace);
+}
+
+blockquote {
+  margin: 0px;
+  margin-block: 1rem;
+  padding-block: 0.25rem;
+  padding-inline-start: 0.5rem;
+
+  border-inline-start: 0.5rem solid var(--color-border);
+  background-color: lightgray;
+
+  font-family: "Tahoma", var(--font-normal);
+}
+
+pre {
+  margin: 0px;
+  margin-block: 1rem;
+  padding: 0.25rem;
+
+  border: 1px solid  var(--color-border);
+  background-color: lightgray;
+}
+
+table {
+  border: 1px solid var(--color-border);
+  border-collapse: collapse;
+  margin-block: 1rem;
+}
+table th, table td {
+  padding: 0.25rem 0.75rem;
+}
+table th {
+  border-block-end: 1px  solid  var(--color-border);
+  background-color: var(--color-border);
+  color: white;
+}
+table td {
+  border-inline-end: 1px solid  var(--color-border);
+}
+
+table tr:nth-child(even) {
+  background-color: var(--color-tablerow-even);
+}
+table tr:nth-child(odd) {
+  background-color: var(--color-tablerow-odd);
+}
+
+div.callout {
+  margin-block: 1rem;
+  padding: 0.25rem;
+  border-block: 0.25rem solid var(--color-border);
+  background: var(--color-highlight);
+}
+
+sup {
+  font-size:  0.6rem;
+  font-weight: bold;
+}

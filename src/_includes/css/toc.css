@@ -1,0 +1,31 @@
+nav.toc {
+  border: 1px solid black;
+  padding:  0.5rem;
+  /* display: inline-block; */
+}
+
+nav.toc a {
+  text-decoration: none;
+}
+
+nav.toc ol {
+  list-style: none;
+  padding-inline-start: 0px;
+  margin: 0px;
+}
+
+/* "top-level" */
+nav.toc>ol>li {
+  font-family: Exocet, Verdana, Arial, sans-serif;
+  font-weight: bold;
+}
+
+/* sub levels */
+nav.toc>ol>li ol {
+  font-size: 1rem;
+  margin-inline-start: 1rem;
+}
+nav.toc>ol>li li {
+  font-weight: normal;
+  font-family: Verdana, Arial, sans-serif;
+}
