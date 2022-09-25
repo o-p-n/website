@@ -1,3 +1,3 @@
-# O U T E R - P L A N E S
+Welcome weary traveler, to the
 
-Welcome weary traveler!
+# {{ site.title }}
