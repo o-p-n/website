@@ -1,0 +1,27 @@
+@use "./vars";
+
+p {
+  margin: 0px;
+  margin-block-end: 1rem;
+}
+
+blockquote {
+  margin: 0px;
+  margin-block: 1rem;
+  padding-inline-start: 1.5rem;
+  padding-block: 0.5rem;
+  border-inline-start: 0.5rem solid vars.$border-color;
+  background-color: vars.$highlight-color;
+
+  >p {
+    margin: 0px;
+  }
+}
+
+pre {
+  margin: 0px;
+  margin-block: 1rem;
+  padding-inline-start: 0.5rem;
+  padding-block: 0.5rem;
+  background-color: vars.$highlight-color;
+}
