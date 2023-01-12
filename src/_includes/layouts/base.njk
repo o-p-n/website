@@ -3,16 +3,8 @@
   <head>
     <title>{%if title %}{{title}} :: {% endif %}{{ site.title }}</title>
     <meta charset="utf-8"/>
-    {% set style %}
-      {% include "../css/variables.css" %}
-      {% include "../css/typography.css" %}
-      {% include  "../css/toc.css" %}
-      {% include "../css/footnote.css" %}
-      {% include "../css/gallery.css" %}
-    {% endset %}
-    <style>
-      {{ style | safe }}
-    </style>
+    <link rel="stylesheet" href="/styles/main.css" />
+    <style>{{ style | safe }}</style>
   </head>
   <body>
     {{ content | safe }}

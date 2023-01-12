@@ -1,0 +1,13 @@
+@use "./vars";
+@use "./typography";
+
+@use "./headings";
+@use "./block";
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  font: 12pt vars.$font-normal;
+}
