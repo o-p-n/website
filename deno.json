@@ -1,5 +1,9 @@
 {
-  "importMap": "./import_map.json",
+  "imports": {
+    "lume/": "https://deno.land/x/lume@v1.15.0/",
+    "markdown-it-container": "npm:markdown-it-container",
+    "markdown-it-footnote": "npm:markdown-it-footnote"
+  },
   "tasks": {
     "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable -A -",
     "build": "deno task lume",

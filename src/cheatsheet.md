@@ -87,3 +87,11 @@ code: `Consectetur Ullamcorper`
 strikethorugh: ~~Parturient Ipsum~~
 
 link: [Tortor Mollis](https://example.com)
+
+# Special
+
+Morbi leo risus, porta ac consectetur ac, vestibulum[^1] at eros. Nullam id dolor id nibh ultricies[^note] vehicula ut id elit.
+
+[^1]: The first footnote
+
+[^note]: Nullam quis risus eget urna mollis ornare vel eu leo.
