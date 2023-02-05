@@ -4,6 +4,7 @@
 @use "./inline";
 @use "./block";
 @use "./headings";
+@use "./footnote";
 
 * {
   box-sizing: border-box;
