@@ -1,0 +1,15 @@
+@use "./vars";
+@use "./typography";
+
+@use "./inline";
+@use "./block";
+@use "./headings";
+@use "./footnote";
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  font: 12pt vars.$font-normal;
+}
