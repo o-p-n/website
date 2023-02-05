@@ -1,8 +1,9 @@
 @use "./vars";
 @use "./typography";
 
-@use "./headings";
+@use "./inline";
 @use "./block";
+@use "./headings";
 
 * {
   box-sizing: border-box;

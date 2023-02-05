@@ -25,3 +25,28 @@ pre {
   padding-block: 0.5rem;
   background-color: vars.$highlight-color;
 }
+
+div.callout {
+  border: 1px solid vars.$border-color;
+  background-color: #efefef;
+  margin-block: 0.5rem;
+  padding: 0.5rem;
+
+  &.info {
+    background-color: #dcdcef;
+  }
+  &.warning {
+    background-color: #efefdc;
+  }
+}
+
+dl {
+  >dt {
+    font-weight: bold;
+  }
+  >dd {
+    border-inline-start: 0.5rem solid vars.$border-color;
+    margin: 0px;
+    padding-inline-start: 0.5rem;
+  }
+}
