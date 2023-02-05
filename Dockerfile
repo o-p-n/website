@@ -1,6 +1,6 @@
 ARG DOCKER_REGISTRY=localhost:5000
 ARG STAMP=latest
-FROM lukechannings/deno:v1.29.2 AS builder
+FROM lukechannings/deno:v1.30.2 AS builder
 
 WORKDIR /working
 RUN mkdir -p /working
