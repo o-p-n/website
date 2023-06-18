@@ -7,6 +7,6 @@ RUN mkdir -p /working
 COPY . /working
 RUN deno task build
 
-FROM docker.io/linuxwolf/serveit:70c3729aaed5ed4b8405e6bece694f5c65d7b293 AS website
+FROM docker.io/linuxwolf/serveit:dc3030b4729cb58a8654f87ef05ff454a911c095 AS website
 
 COPY --from=builder /working/_site /app/web
