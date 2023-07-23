@@ -34,7 +34,7 @@ jobs:
             buildx-${{ runner.os }}
       - name: Build and publish image
         run: |
-          make image-only \
+          make image \
             DOCKER_CACHE=/tmp/.buildx-cache \
             DOCKER_REGISTRY=${{ env.CONTAINER_REGISTRY }} \
             STAMP=${{ github.sha }}
