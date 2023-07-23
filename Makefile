@@ -1,5 +1,5 @@
 PROJECT=website
-DOCKER_REPO_OWNER=linuxwolf
+DOCKER_REPO_OWNER=o-p-n
 DOCKER_CACHE=${HOME}/.cache/docker-buildx
 DOCKER_BUILDER=container-builder
 
@@ -11,9 +11,9 @@ include .builder/main.mk
 .builder/main.mk:
 	git clone -q https://github.com/o-p-n/image-builder.git -b main .builder
 
-image: linuxwolf/website
+image: $(DOCKER_REPO_OWNER)/website
 
-linuxwolf/website: Dockerfile
+$(DOCKER_REPO_OWNER)/website: Dockerfile
 
 publish: image
 	STAMP=$(STAMP) \
