@@ -1,6 +1,6 @@
 {
   "imports": {
-    "lume/": "https://deno.land/x/lume@v1.15.0/",
+    "lume/": "https://deno.land/x/lume@v1.18.2/",
     "markdown-it-container": "npm:markdown-it-container",
     "markdown-it-footnote": "npm:markdown-it-footnote"
   },

@@ -24,6 +24,7 @@ site.use(sass({
   format: "expanded",
 }));
 
+site.copyRemainingFiles();
 site.copy("assets");
 site.copy(".well-known");
 

@@ -3,6 +3,7 @@
   <head>
     <title>{%if title %}{{title}} :: {% endif %}{{ site.title }}</title>
     <meta charset="utf-8"/>
+    <meta itemprop="created" content="{{ date | date("yyyy-MM-dd'T'HH:mm:ssXXX")}}"/>
     <link rel="stylesheet" href="/styles/main.css" />
     <style>{{ style | safe }}</style>
   </head>
