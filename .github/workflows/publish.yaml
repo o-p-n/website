@@ -78,9 +78,14 @@ jobs:
           SSH_USER: ${{ secrets.DEPLOYMENT_SSH_USERNAME }}
           SSH_KEY: ${{ secrets.DEPLOYMENT_SSH_KEY }}
       - name: Deploy stack
+        env:
+          IMAGE_TAG: ${{ github.sha }}
+          DOCKER_REGISTRY: ${{ env.CONTAINER_REGISTRY }}
+          DOCKER_CONTEXT: o-p-n
+          SSH_USER: ${{ secrets.DEPLOYMENT_SSH_USERNAME }}
         run: |
-          docker context create o-p-n --docker "host=ssh://${{ secrets.DEPLOYMENT_SSH_USERNAME }}@outer-planes.net"
+          docker context create "${DOCKER_CONTEXT}" --docker "host=ssh://${SSH_USER}@outer-planes.net"
           task deploy.only \
-            DOCKER_CONTEXT=o-p-n
-            IMAGE_TAG=${{ github.sha }}
-            DOCKER_REGISTRY=${{ env.CONTAINER_REGISTRY }}
+            DOCKER_CONTEXT=${DOCKER_CONTEXT}
+            DOCKER_REGISTRY=${DOCKER_REGISTRY}
+            IMAGE_TAG=${IMAGE_TAG}
