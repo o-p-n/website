@@ -34,7 +34,7 @@ tasks:
       IMAGE_TAG: "{{ .IMAGE_TAG }}"
     cmds:
       - cmd: |
-          docker -c {{ .DOCKER_CONTEXT }} \
+          docker --context {{ .DOCKER_CONTEXT }} \
             stack deploy \
             --compose-file docker-compose.yaml \
             --prune \
