@@ -9,7 +9,7 @@ on:
 jobs:
   publish-image:
     name: Publish image
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -47,7 +47,7 @@ jobs:
             IMAGE_TAG=${{ github.sha }}
   deploy:
     name: Deploy image
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: publish-image
     steps:
       - name: Checkout
