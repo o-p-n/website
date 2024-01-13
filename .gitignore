@@ -1,4 +1,4 @@
-.builder/
 .cache/
+.task/
 _site/
 node_modules/

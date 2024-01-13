@@ -7,44 +7,36 @@ on:
 jobs:
   build-image:
     name: Build image
-    runs-on: ubuntu-latest
-    services:
-      registry:
-        image: registry:2
-        ports:
-          - 5000:5000
+    runs-on: ubuntu-22.04
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v3
-      -
-        name: Setup QEMU
-        uses: docker/setup-qemu-action@v3
-      - 
-        name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        with:
+          submodules: true
+      - name: Setup Task
+        uses: arduino/setup-task@v1
+        with:
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: 1.39.2
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v2
         with:
           driver-opts: network=host
-      -
-        name: Setup Caching
+      - name: Setup Caching
         uses: actions/cache@v3
         with:
           path: /tmp/.buildx-cache
           key: buildx-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             buildx-${{ runner.os }}
-      -
-        name: Build image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          tags: localhost:5000/o-p-n/website:latest
-          push: true
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-      -
-        name: Prune cache
+      - name: Build image
+        env:
+          DOCKER_CACHE: /tmp/.buildx-cache
         run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+          task image

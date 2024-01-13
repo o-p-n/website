@@ -1,0 +1,46 @@
+version: "3"
+
+includes:
+  docker:
+    taskfile: ./.builder/docker/taskfile.yaml
+    internal: true
+
+vars:
+  DOCKER_CONTEXT: '{{ default "default" .DOCKER_CONTEXT }}'
+
+tasks:
+  build:
+    sources:
+      - src/**
+      - _config.ts
+      - deno.json
+      - deno.lock
+    generates:
+      - _site/**
+    cmds:
+      - deno task build
+
+  image:
+    deps:
+      - build
+    cmds:
+      - task: docker:image
+        vars:
+          IMAGE_REPOSITORY: o-p-n/website
+
+  deploy.only:
+    env:
+      DOCKER_REGISTRY: "{{ .DOCKER_REGISTRY }}"
+      IMAGE_TAG: "{{ .IMAGE_TAG }}"
+    cmds:
+      - cmd: |
+          docker -c {{ .DOCKER_CONTEXT }} \
+            stack deploy \
+            --compose-file docker-compose.yaml \
+            --prune \
+            website
+
+  deploy:
+    cmds:
+      - task: image
+      - task: deploy.only

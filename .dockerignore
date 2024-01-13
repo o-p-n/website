@@ -1,7 +1,6 @@
 .builder/
 .cache/
 .git/
-_site/
 .gitignore
 Dockerfile
 docker-compose.yaml
