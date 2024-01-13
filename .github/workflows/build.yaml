@@ -33,6 +33,6 @@ jobs:
             buildx-${{ runner.os }}
       - name: Build image
         env:
-          DOCKER_CACHE=/tmp/.buildx-cache
+          DOCKER_CACHE: /tmp/.buildx-cache
         run: |
           task image
