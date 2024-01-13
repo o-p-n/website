@@ -13,6 +13,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Setup Task
+        uses: arduino/setup-task@v1
+        with:
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v3
       - name: Setup Docker Buildx
@@ -34,10 +41,10 @@ jobs:
             buildx-${{ runner.os }}
       - name: Build and publish image
         run: |
-          make image \
+          task image \
             DOCKER_CACHE=/tmp/.buildx-cache \
             DOCKER_REGISTRY=${{ env.CONTAINER_REGISTRY }} \
-            STAMP=${{ github.sha }}
+            IMAGE_TAG=${{ github.sha }}
   deploy:
     name: Deploy image
     runs-on: ubuntu-latest
@@ -45,6 +52,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Setup Task
+        uses: arduino/setup-task@v1
+        with:
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Configure SSH
         run: |
           mkdir -p ~/.ssh/
@@ -61,12 +75,8 @@ jobs:
           SSH_KEY: ${{ secrets.DEPLOYMENT_SSH_KEY }}
       - name: Deploy stack
         run: |
-          docker --host ssh://${SSH_USER}@outer-planes.net \
-            stack deploy \
-            --compose-file docker-compose.yaml \
-            --prune \
-            website
-        env:
-          SSH_USER: ${{ secrets.DEPLOYMENT_SSH_USERNAME }}
-          STAMP: ${{ github.sha }}
-          DOCKER_REGISTRY: ${{ env.CONTAINER_REGISTRY }}
+          docker context create o-p-n --docker "host=ssh://${{ secrets.DEPLOYMENT_SSH_USERNAME }}@outer-planes.net"
+          task deploy.only \
+            DOCKER_CONTEXT=o-p-n
+            IMAGE_TAG=${{ github.sha }}
+            DOCKER_REGISTRY=${{ env.CONTAINER_REGISTRY }}

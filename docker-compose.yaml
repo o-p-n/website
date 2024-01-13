@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   server:
-    image: ${DOCKER_REGISTRY:-localhost:5000}/o-p-n/website:${STAMP:-latest}
+    image: ${DOCKER_REGISTRY:-localhost:5000}/o-p-n/website:${IMAGE_TAG:-latest}
     deploy:
       replicas: 2
       labels:
