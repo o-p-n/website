@@ -1,0 +1,11 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: website
+  namespace: website
+spec:
+  template:
+    spec:
+      containers:
+      - name: website
+        image: host.minikube.internal:5000/o-p-n/website:latest
