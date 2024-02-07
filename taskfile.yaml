@@ -8,8 +8,13 @@ includes:
 vars:
   DOCKER_CONTEXT: '{{ default "default" .DOCKER_CONTEXT }}'
 
+  DEFAULT_EPOCH: '{{ now | unixEpoch }}'
+  DEFAULT_DATE: '{{ now | date "2006-01-02T15:04:05" }}'
+
 tasks:
   build:
+    vars:
+      SOURCE_DATE: '{{ coalesce .SOURCE_DATE .DEFAULT_DATE }}'
     sources:
       - src/**
       - _config.ts
@@ -19,14 +24,18 @@ tasks:
       - _site/**
     cmds:
       - deno task build
+      - find _site | xargs -I{} touch -c -d {{ .SOURCE_DATE }} {}
 
   image:
+    vars:
+      SOURCE_EPOCH: '{{ coalesce .SOURCE_EPOCH .DEFAULT_EPOCH }}'
     deps:
       - build
     cmds:
       - task: docker:image
         vars:
           IMAGE_REPOSITORY: o-p-n/website
+          DOCKER_SOURCE_EPOCH: '{{ .SOURCE_EPOCH }}'
 
   deploy.only:
     env:
