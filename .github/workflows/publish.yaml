@@ -1,10 +1,10 @@
 name: publish
-env:
-  CONTAINER_REGISTRY: ghcr.io
 on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "k8s/**"
 
 jobs:
   publish-image:
@@ -33,7 +33,7 @@ jobs:
       - name: Signin to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.CONTAINER_REGISTRY }}
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Caching
@@ -47,45 +47,9 @@ jobs:
         run: |
           task image \
             DOCKER_CACHE=/tmp/.buildx-cache \
-            DOCKER_REGISTRY=${{ env.CONTAINER_REGISTRY }} \
+            DOCKER_REGISTRY=ghcr.io \
             IMAGE_TAG=${{ github.sha }}
-  deploy:
-    name: Deploy image
-    runs-on: ubuntu-22.04
-    needs: publish-image
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          submodules: true
-      - name: Setup Task
-        uses: arduino/setup-task@v1
-        with:
-          version: 3.x
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Configure SSH
+      - name: Update manifest
         run: |
-          mkdir -p ~/.ssh/
-          echo "${SSH_KEY}" > ~/.ssh/deploy.key
-          chmod 600 ~/.ssh/deploy.key
-          cat << ---END--- > ~/.ssh/config
-          Host *
-            User ${SSH_USER}
-            IdentityFile ~/.ssh/deploy.key
-            StrictHostKeyChecking no
-          ---END---
-        env:
-          SSH_USER: ${{ secrets.DEPLOYMENT_SSH_USERNAME }}
-          SSH_KEY: ${{ secrets.DEPLOYMENT_SSH_KEY }}
-      - name: Deploy stack
-        env:
-          IMAGE_TAG: ${{ github.sha }}
-          DOCKER_REGISTRY: ${{ env.CONTAINER_REGISTRY }}
-          DOCKER_CONTEXT: o-p-n
-          SSH_USER: ${{ secrets.DEPLOYMENT_SSH_USERNAME }}
-        run: |
-          docker context create "${DOCKER_CONTEXT}" --docker "host=ssh://${SSH_USER}@outer-planes.net"
-          task deploy.only \
-            DOCKER_CONTEXT=${DOCKER_CONTEXT}
-            DOCKER_REGISTRY=${DOCKER_REGISTRY}
-            IMAGE_TAG=${IMAGE_TAG}
+          task kustomize.only \
+            K8S_REGISTRY=ghcr.io
