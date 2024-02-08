@@ -941,5 +941,11 @@
     "https://deno.land/x/vento@v0.10.1/src/environment.ts": "d5b39b15b5d29c6a4548c045558463acbfff192593ff2719b2bb9c19305b8116",
     "https://deno.land/x/vento@v0.10.1/src/loader.ts": "eb01b0dca7ea8bcdcdfd30b1f90f2fad28fb7f2cfd943900322a85bfaa86130c",
     "https://deno.land/x/vento@v0.10.1/src/tokenizer.ts": "242e12ebe4230799e89f0866adfd2a7c6bca1606beb88d18742d9d58aca60603"
+  },
+  "workspace": {
+    "dependencies": [
+      "npm:markdown-it-container",
+      "npm:markdown-it-footnote"
+    ]
   }
 }
