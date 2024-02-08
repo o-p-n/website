@@ -7,9 +7,12 @@ includes:
 
 vars:
   DOCKER_CONTEXT: '{{ default "default" .DOCKER_CONTEXT }}'
+  DOCKER_METADATA: '{{ default "target/metadata.json" .DOCKER_METADATA }}'
 
   DEFAULT_EPOCH: '{{ now | unixEpoch }}'
   DEFAULT_DATE: '{{ now | date "2006-01-02T15:04:05" }}'
+
+  IMAGE_REPOSITORY: o-p-n/website
 
 tasks:
   build:
@@ -37,19 +40,42 @@ tasks:
           IMAGE_REPOSITORY: o-p-n/website
           DOCKER_SOURCE_EPOCH: '{{ .SOURCE_EPOCH }}'
 
+  kustomize.only:
+    vars:
+      ENV: '{{ .ENV }}'
+      K8S_REGISTRY: '{{default "host.minikube.internal:5000" .K8S_REGISTRY}}'
+      IMAGE_DIGEST:
+        sh: cat {{ .DOCKER_METADATA }} | jq -r '."containerimage.digest"'
+      IMAGE: '{{ .K8S_REGISTRY }}/{{ .IMAGE_REPOSITORY }}@{{ .IMAGE_DIGEST }}'
+    cmds:
+      - |
+        cat << ---EOF--- > k8s/env/{{ .ENV }}/deployment-image-patch.yaml
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: website
+          namespace: website
+        spec:
+          template:
+            spec:
+              containers:
+              - name: website
+                image: {{ .IMAGE }}
+        ---EOF---
+  kustomize:
+    deps:
+      - image
+    cmds:
+      - task: kustomize.only
+
   deploy.only:
     env:
-      DOCKER_REGISTRY: "{{ .DOCKER_REGISTRY }}"
-      IMAGE_TAG: "{{ .IMAGE_TAG }}"
+      ENV: '{{.ENV}}'
     cmds:
-      - cmd: |
-          docker --context {{ .DOCKER_CONTEXT }} \
-            stack deploy \
-            --compose-file docker-compose.yaml \
-            --prune \
-            website
+      - o-p-n.deployer apply --env {{.ENV}}
 
   deploy:
+    deps:
+      - kustomize
     cmds:
-      - task: image
       - task: deploy.only
