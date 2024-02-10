@@ -40,13 +40,17 @@ tasks:
           IMAGE_REPOSITORY: o-p-n/website
           DOCKER_SOURCE_EPOCH: '{{ .SOURCE_EPOCH }}'
 
-  kustomize.only:
+  kustomize.env:
     vars:
       ENV: '{{ .ENV }}'
-      K8S_REGISTRY: '{{default "host.minikube.internal:5000" .K8S_REGISTRY}}'
+      K8S_REGISTRY: '{{.K8S_REGISTRY}}'
       IMAGE_DIGEST:
         sh: cat {{ .DOCKER_METADATA }} | jq -r '."containerimage.digest"'
       IMAGE: '{{ .K8S_REGISTRY }}/{{ .IMAGE_REPOSITORY }}@{{ .IMAGE_DIGEST }}'
+    sources:
+      - '{{ .DOCKER_METADATA }}'
+    generates:
+      - k8s/env/{{ .ENV }}/deployment-image-patch.yaml
     cmds:
       - |
         cat << ---EOF--- > k8s/env/{{ .ENV }}/deployment-image-patch.yaml
@@ -62,6 +66,19 @@ tasks:
               - name: website
                 image: {{ .IMAGE }}
         ---EOF---
+  kustomize.only:
+    vars:
+      K8S_REGISTRY: '{{ coalesce .K8S_REGISTRY .DOCKER_REGISTRY }}'
+    deps:
+      - task: kustomize.env
+        vars:
+          ENV: intranet
+          K8S_REGISTRY: '{{ .K8S_REGISTRY }}'
+      - task: kustomize.env
+        vars:
+          ENV: public
+          K8S_REGISTRY: '{{ .K8S_REGISTRY }}'
+
   kustomize:
     deps:
       - image
@@ -74,8 +91,16 @@ tasks:
     cmds:
       - o-p-n.deployer apply --env {{.ENV}}
 
-  deploy:
-    deps:
-      - kustomize
+  deploy.local:
+    vars:
+      ENV: local
+      K8S_REGISTRY: host.minikube.internal:5000
+      DOCKER_REGISTRY: localhost:5000
     cmds:
+      - task: image
+        vars:
+          ENV: '{{ .ENV }}'
+          DOCKER_REGISTRY: '{{ .DOCKER_REGISTRY }}'
       - task: deploy.only
+        vars:
+          ENV: '{{ .ENV }}'
