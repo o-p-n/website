@@ -16,10 +16,8 @@ jobs:
         include:
           - environment: intranet
             hostname: outer-planes.casa
-            kubeconfig: ${{ secrets.DEPLOYMENT_KUBECONFIG_INTRANET }}
           - environment: public
             hostname: outer-planes.net
-            kubeconfig: ""
     steps:
       - name: Setup Task
         uses: arduino/setup-task@v1
@@ -55,7 +53,7 @@ jobs:
       - name: Prepare Kubectl
         run: |
           mkdir -p ~/.kube
-          echo "${{ matrix.kubeconfig }}" > ~/.kube/config
+          ssh ${{ matrix.hostname }} microk8s config > ~/.kube/config
       - name: Deploy ${{ matrix.environment }}
         run: |
           ssh -L 16443:localhost:16443 -N -f ${{ matrix.hostname }}
