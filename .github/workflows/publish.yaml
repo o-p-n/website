@@ -10,11 +10,21 @@ jobs:
   publish-image:
     name: Publish image
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
+      - name: "Generate access token"
+        id: gentoken
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.RELEASE_MANAGER_APP_ID }}
+          private-key: ${{ secrets.RELEASE_MANAGER_PRIVATE_KEY }}
       - name: Checkout
         uses: actions/checkout@v3
         with:
           submodules: true
+          token: ${{ steps.gentoken.outputs.token }}
       - name: Setup Task
         uses: arduino/setup-task@v1
         with:
@@ -45,11 +55,17 @@ jobs:
             buildx-${{ runner.os }}
       - name: Build and publish image
         run: |
-          task image \
+          task kustomize \
             DOCKER_CACHE=/tmp/.buildx-cache \
             DOCKER_REGISTRY=ghcr.io \
             IMAGE_TAG=${{ github.sha }}
-      - name: Update manifest
+      - name: Create deployment PR
         run: |
-          task kustomize.only \
-            K8S_REGISTRY=ghcr.io
+          git config user.name 'o-p-n-release-manager[bot]'
+          git config user.email '${{ secrets.RELEASE_MANAGER_APP_ID }}+o-p-n-release-manager[bot]@noreply.users.github.com'
+          git checkout -b deploy-${{ github.sha }}
+          git add --all
+          git commit -am "chore: deploy ${{ github.sha }}"
+          gh pr create --title="chore: deploy ${{ github.sha }}" --body=""
+          sleep 5
+          gh pr merge --auto --squash
