@@ -1,0 +1,62 @@
+name: deploy
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - "k8s/env/public/**"
+
+jobs:
+  publish-image:
+    name: Deploy image
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        include:
+          - environment: intranet
+            hostname: outer-planes.casa
+            kubeconfig: ${{ secrets.DEPLOYMENT_KUBECONFIG_INTRANET }}
+          - environment: public
+            hostname: outer-planes.net
+            kubeconfig: ""
+    steps:
+      - name: Setup Task
+        uses: arduino/setup-task@v1
+        with:
+          version: 3.x
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Setup Kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: "1.28.3"
+      - name: Setup Deployer
+        # TODO: convert into an action
+        run: |
+          PLATFORM=$(uname -p -s | tr '[:upper:]' '[:lower:]' | awk '{print $2 "-unknown-" $1 "-gnu"}')
+          gh --repo o-p-n/deployer release download -p "*-${PLATFORM}.tar.gz" -O - \
+            tar xzf -
+          mv o-p-n.deployer /usr/local/bin
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Prepare SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.DEPLOYMENT_SSH_KEY }}" > ~/.ssh/deploy.key
+          chmod 600 ~/.ssh/deploy.key
+          cat << ---EOF--- > ~/.ssh/config
+          Host *
+            User ${{ secrets.DEPLOYMENT_SSH_USERNAME }}
+            IdentityFile ~/.ssh/deploy.key
+            StrictHostChecking no
+          ---EOF---
+      - name: Prepare Kubectl
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ matrix.kubeconfig }}" > ~/.kube/config
+      - name: Deploy ${{ matrix.environment }}
+        run: |
+          ssh -L 16443:localhost:16443 -N -f ${{ matrix.hostname }}
+          o-p-n.deployer apply --env ${{ matrix.environment }}
