@@ -31,10 +31,22 @@ jobs:
       - name: Setup Deployer
         # TODO: convert into an action
         run: |
-          PLATFORM=$(uname -p -s | tr '[:upper:]' '[:lower:]' | awk '{print $2 "-unknown-" $1 "-gnu"}')
-          gh --repo o-p-n/deployer release download -p "*-${PLATFORM}.tar.gz" -O - \
-            tar xzf -
-          mv o-p-n.deployer /usr/local/bin
+          PLATFORM_ARCH=$(uname -p)
+          PLATFORM_OS=$(uname -p | tr'[:upper:]' '[:lower:]')
+          if [[ "${PLATFORM_OS}" == "darwin" ]] ; then
+            if [[ "${PLATFORM_ARCH}" == "arm64" ]] ; then
+              PLATFORM_ARCH="aarch64"
+            else
+              PLATFORM_ARCH="x86_64"
+            fi
+            PLATFORM="${PLATFORM_ARCH}-apple-${PLATFORM_OS}"
+          else
+            PLATFORM="${PLATFORM_ARCH}-unknown-${PLATFORM_OS}-gnu"
+          fi
+          cd /usr/local/bin && \
+            gh --repo o-p-n/deployer release download \
+              -p "*-${PLATFORM}.tar.gz" -O - \
+            | tar xzf -
       - name: Checkout
         uses: actions/checkout@v3
         with:
