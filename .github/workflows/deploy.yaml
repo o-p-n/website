@@ -65,8 +65,9 @@ jobs:
       - name: Prepare Kubectl
         run: |
           mkdir -p ~/.kube
-          ssh ${{ matrix.hostname }} microk8s config > ~/.kube/config
+          ssh ${{ matrix.hostname }} /snap/bin/microk8s config | sed 's/server: https:\/\/.*:/https:\/\/127.0.0.1:/' > ~/.kube/config
       - name: Deploy ${{ matrix.environment }}
         run: |
           ssh -L 16443:localhost:16443 -N -f ${{ matrix.hostname }}
           o-p-n.deployer apply --env ${{ matrix.environment }}
+          killall ssh
