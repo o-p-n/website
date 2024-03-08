@@ -55,15 +55,11 @@ jobs:
           restore-keys: |
             buildx-${{ runner.os }}
       - name: Build and publish image
-        id: build-image
         run: |
           task kustomize \
             DOCKER_CACHE=/tmp/.buildx-cache \
             DOCKER_REGISTRY=ghcr.io \
-            IMAGE_TAG=${{ github.sha }}
-          echo "clean=$(git status --porcelain)" >> "$GITHUB_OUTPUT"
       - name: Create and Approve deployment PR
-        if: ${{ steps.build-image.outputs.clean != '' }}
         env:
           GH_TOKEN: ${{ steps.gentoken.outputs.token }}
           GIT_USER_NAME: o-p-n-release-manager[bot]
