@@ -6,9 +6,9 @@ loggit() {
   echo "$@" >> /dev/stderr
 }
 
-check_dirty() {
-  git update-index --refresh
-  git diff --quiet
+check_clean() {
+  git update-index --refresh --ignore-submodules 2>&1 >> /dev/null
+  git diff --quiet --ignore-submodules
 }
 
 config_git() {
@@ -28,15 +28,18 @@ approve_pr() {
   gh pr merge --auto --squash
 }
 
-if [[ check_dirty ]] ; then
-  loggit "changes detected; update repo"
-  echo loggit "📝 configure git"
-  echo config_git
-  echo loggit "💾 creating pull-request"
-  echo create_pr
-  echo sleep 10
-  echo loggit "✔ auto-approve pull-request"
-  echo approve_pr
+if check_clean ; then
+  loggit "✨ — working copy clean; no changes detected"
 else
-  loggit "working copy clean; no changes detected"
+  loggit "changes detected; update repo"
+  loggit "📝 — configure git"
+  config_git
+  loggit "💾 — creating pull-request"
+  create_pr
+  
+  loggit ⏳ — give GH some time ...
+  sleep 10
+
+  loggit "✅ — auto-approve pull-request"
+  approve_pr
 fi
