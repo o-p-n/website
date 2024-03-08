@@ -7,9 +7,17 @@ includes:
 
 vars:
   DOCKER_CONTEXT: '{{ default "default" .DOCKER_CONTEXT }}'
+  DOCKER_METADATA: '{{ default "target/metadata.json" .DOCKER_METADATA }}'
+
+  DEFAULT_EPOCH: '{{ now | unixEpoch }}'
+  DEFAULT_DATE: '{{ now | date "2006-01-02T15:04:05" }}'
+
+  IMAGE_REPOSITORY: o-p-n/website
 
 tasks:
   build:
+    vars:
+      SOURCE_DATE: '{{ coalesce .SOURCE_DATE .DEFAULT_DATE }}'
     sources:
       - src/**
       - _config.ts
@@ -19,28 +27,80 @@ tasks:
       - _site/**
     cmds:
       - deno task build
+      - find _site | xargs -I{} touch -c -d {{ .SOURCE_DATE }} {}
 
   image:
+    vars:
+      SOURCE_EPOCH: '{{ coalesce .SOURCE_EPOCH .DEFAULT_EPOCH }}'
     deps:
       - build
     cmds:
       - task: docker:image
         vars:
           IMAGE_REPOSITORY: o-p-n/website
+          DOCKER_SOURCE_EPOCH: '{{ .SOURCE_EPOCH }}'
+
+  kustomize.env:
+    vars:
+      ENV: '{{ .ENV }}'
+      K8S_REGISTRY: '{{.K8S_REGISTRY}}'
+      IMAGE_DIGEST:
+        sh: cat {{ .DOCKER_METADATA }} | jq -r '."containerimage.digest"'
+      IMAGE: '{{ .K8S_REGISTRY }}/{{ .IMAGE_REPOSITORY }}@{{ .IMAGE_DIGEST }}'
+    sources:
+      - '{{ .DOCKER_METADATA }}'
+    generates:
+      - k8s/env/{{ .ENV }}/deployment-image-patch.yaml
+    cmds:
+      - |
+        cat << ---EOF--- > k8s/env/{{ .ENV }}/deployment-image-patch.yaml
+        apiVersion: apps/v1
+        kind: Deployment
+        metadata:
+          name: website
+          namespace: website
+        spec:
+          template:
+            spec:
+              containers:
+              - name: website
+                image: {{ .IMAGE }}
+        ---EOF---
+  kustomize.only:
+    vars:
+      K8S_REGISTRY: '{{ coalesce .K8S_REGISTRY .DOCKER_REGISTRY }}'
+    deps:
+      - task: kustomize.env
+        vars:
+          ENV: intranet
+          K8S_REGISTRY: '{{ .K8S_REGISTRY }}'
+      - task: kustomize.env
+        vars:
+          ENV: public
+          K8S_REGISTRY: '{{ .K8S_REGISTRY }}'
+
+  kustomize:
+    deps:
+      - image
+    cmds:
+      - task: kustomize.only
 
   deploy.only:
     env:
-      DOCKER_REGISTRY: "{{ .DOCKER_REGISTRY }}"
-      IMAGE_TAG: "{{ .IMAGE_TAG }}"
+      ENV: '{{.ENV}}'
     cmds:
-      - cmd: |
-          docker --context {{ .DOCKER_CONTEXT }} \
-            stack deploy \
-            --compose-file docker-compose.yaml \
-            --prune \
-            website
+      - o-p-n.deployer apply --env {{.ENV}}
 
-  deploy:
+  deploy.local:
+    vars:
+      ENV: local
+      K8S_REGISTRY: host.minikube.internal:5000
+      DOCKER_REGISTRY: localhost:5000
     cmds:
       - task: image
+        vars:
+          ENV: '{{ .ENV }}'
+          DOCKER_REGISTRY: '{{ .DOCKER_REGISTRY }}'
       - task: deploy.only
+        vars:
+          ENV: '{{ .ENV }}'

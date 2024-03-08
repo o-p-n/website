@@ -1,20 +1,30 @@
 name: publish
-env:
-  CONTAINER_REGISTRY: ghcr.io
 on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "k8s/**"
 
 jobs:
   publish-image:
     name: Publish image
     runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+      pull-requests: write
     steps:
+      - name: "Generate access token"
+        id: gentoken
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.RELEASE_MANAGER_APP_ID }}
+          private-key: ${{ secrets.RELEASE_MANAGER_PRIVATE_KEY }}
       - name: Checkout
         uses: actions/checkout@v3
         with:
           submodules: true
+          token: ${{ steps.gentoken.outputs.token }}
       - name: Setup Task
         uses: arduino/setup-task@v1
         with:
@@ -33,7 +43,7 @@ jobs:
       - name: Signin to GitHub Container Registry
         uses: docker/login-action@v3
         with:
-          registry: ${{ env.CONTAINER_REGISTRY }}
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Caching
@@ -44,48 +54,17 @@ jobs:
           restore-keys: |
             buildx-${{ runner.os }}
       - name: Build and publish image
+        id: build-image
         run: |
-          task image \
+          task kustomize \
             DOCKER_CACHE=/tmp/.buildx-cache \
-            DOCKER_REGISTRY=${{ env.CONTAINER_REGISTRY }} \
+            DOCKER_REGISTRY=ghcr.io \
             IMAGE_TAG=${{ github.sha }}
-  deploy:
-    name: Deploy image
-    runs-on: ubuntu-22.04
-    needs: publish-image
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          submodules: true
-      - name: Setup Task
-        uses: arduino/setup-task@v1
-        with:
-          version: 3.x
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Configure SSH
-        run: |
-          mkdir -p ~/.ssh/
-          echo "${SSH_KEY}" > ~/.ssh/deploy.key
-          chmod 600 ~/.ssh/deploy.key
-          cat << ---END--- > ~/.ssh/config
-          Host *
-            User ${SSH_USER}
-            IdentityFile ~/.ssh/deploy.key
-            StrictHostKeyChecking no
-          ---END---
+          echo "clean=$(git status --porcelain)" >> "$GITHUB_OUTPUT"
+      - name: Create and Approve deployment PR
+        if: ${{ steps.build-image.outputs.clean != '' }}
         env:
-          SSH_USER: ${{ secrets.DEPLOYMENT_SSH_USERNAME }}
-          SSH_KEY: ${{ secrets.DEPLOYMENT_SSH_KEY }}
-      - name: Deploy stack
-        env:
-          IMAGE_TAG: ${{ github.sha }}
-          DOCKER_REGISTRY: ${{ env.CONTAINER_REGISTRY }}
-          DOCKER_CONTEXT: o-p-n
-          SSH_USER: ${{ secrets.DEPLOYMENT_SSH_USERNAME }}
-        run: |
-          docker context create "${DOCKER_CONTEXT}" --docker "host=ssh://${SSH_USER}@outer-planes.net"
-          task deploy.only \
-            DOCKER_CONTEXT=${DOCKER_CONTEXT}
-            DOCKER_REGISTRY=${DOCKER_REGISTRY}
-            IMAGE_TAG=${IMAGE_TAG}
+          GIT_USER_NAME: o-p-n-release-manager[bot]
+          GIT_USER_EMAIL: ${{ secrets.RELEASE_MANAGER_APP_ID }}+o-p-n-release-manager[bot]@noreply.users.github.com
+          GIT_SHA: ${{ github.sha }}
+        run: .github/scripts/patch-image.sh
