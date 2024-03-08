@@ -30,23 +30,7 @@ jobs:
           version: "1.28.3"
       - name: Setup Deployer
         # TODO: convert into an action
-        run: |
-          PLATFORM_ARCH=$(uname -p)
-          PLATFORM_OS=$(uname -p | tr'[:upper:]' '[:lower:]')
-          if [[ "${PLATFORM_OS}" == "darwin" ]] ; then
-            if [[ "${PLATFORM_ARCH}" == "arm64" ]] ; then
-              PLATFORM_ARCH="aarch64"
-            else
-              PLATFORM_ARCH="x86_64"
-            fi
-            PLATFORM="${PLATFORM_ARCH}-apple-${PLATFORM_OS}"
-          else
-            PLATFORM="${PLATFORM_ARCH}-unknown-${PLATFORM_OS}-gnu"
-          fi
-          cd /usr/local/bin && \
-            gh --repo o-p-n/deployer release download \
-              -p "*-${PLATFORM}.tar.gz" -O - \
-            | tar xzf -
+        run: .github/scripts/install-deployer.sh
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -70,4 +54,4 @@ jobs:
         run: |
           ssh -L 16443:localhost:16443 -N -f ${{ matrix.hostname }}
           o-p-n.deployer apply --env ${{ matrix.environment }}
-          killall ssh
+          exit 0
