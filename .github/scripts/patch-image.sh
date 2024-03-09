@@ -19,7 +19,7 @@ config_git() {
 
 create_pr() {
   git add --all
-  git commit --signoff --message "chore: deploy ${GIT_SHA}"
+  git commit -am "chore: deploy ${GIT_SHA}"
   git push -u origin "deploy-${GIT_SHA}"
   gh pr create --title="chore: deploy ${GIT_SHA}" --body=""
 }
