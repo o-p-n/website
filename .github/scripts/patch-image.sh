@@ -3,7 +3,7 @@
 set -euo pipefail
 
 loggit() {
-  echo "$@" >> /dev/stderr
+  echo "$@" 1>&2
 }
 
 check_clean() {

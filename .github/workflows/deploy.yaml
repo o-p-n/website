@@ -25,9 +25,9 @@ jobs:
           version: 3.x
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Kubectl
-        uses: Azure/setup-kubectl@v4.0.0
-        with:
-          version: "1.28.3"
+        run: .github/scripts/install-kubectl.sh
+        env:
+          INSTALL_PATH: /usr/local/bin
       - name: Setup Deployer
         # TODO: convert into an action
         run: .github/scripts/install-deployer.sh
