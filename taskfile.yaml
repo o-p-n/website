@@ -9,15 +9,18 @@ vars:
   DOCKER_CONTEXT: '{{ default "default" .DOCKER_CONTEXT }}'
   DOCKER_METADATA: '{{ default "target/metadata.json" .DOCKER_METADATA }}'
 
-  DEFAULT_EPOCH: '{{ now | unixEpoch }}'
-  DEFAULT_DATE: '{{ now | date "2006-01-02T15:04:05" }}'
+  DEFAULT_EPOCH: 0
 
   IMAGE_REPOSITORY: o-p-n/website
+  IMAGE_TAG: '{{ coalesce .IMAGE_TAG "latest" }}'
+  SOURCE_EPOCH: '{{ coalesce .SOURCE_EPOCH .DEFAULT_EPOCH }}'
+  SOURCE_DATE:
+    sh: date -u -d @{{ .SOURCE_EPOCH }} +"%Y-%m-%dT%H:%M:%S" 2> /dev/null || date -u -r {{ .SOURCE_EPOCH }} +"%Y-%m-%dT%H:%M:%S"
 
 tasks:
   build:
     vars:
-      SOURCE_DATE: '{{ coalesce .SOURCE_DATE .DEFAULT_DATE }}'
+      SOURCE_DATE: '{{ .SOURCE_DATE }}'
     sources:
       - src/**
       - _config.ts
@@ -27,11 +30,11 @@ tasks:
       - _site/**
     cmds:
       - deno task build
-      - find _site | xargs -I{} touch -c -d {{ .SOURCE_DATE }} {}
+      - find _site | xargs -I{} touch -c -d "{{ .SOURCE_DATE }}Z" {}
 
   image:
     vars:
-      SOURCE_EPOCH: '{{ coalesce .SOURCE_EPOCH .DEFAULT_EPOCH }}'
+      SOURCE_EPOCH: '{{ .SOURCE_EPOCH }}'
     deps:
       - build
     cmds:
@@ -39,6 +42,7 @@ tasks:
         vars:
           IMAGE_REPOSITORY: o-p-n/website
           DOCKER_SOURCE_EPOCH: '{{ .SOURCE_EPOCH }}'
+          IMAGE_TAG: '{{ .IMAGE_TAG }}'
 
   kustomize.env:
     vars:
