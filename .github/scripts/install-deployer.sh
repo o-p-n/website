@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-set -xeuo pipefail
+set -euo pipefail
 
 PLATFORM_ARCH=$(uname -m)
 PLATFORM_OS="$(uname -s | tr '[:upper:]' '[:lower:]')"

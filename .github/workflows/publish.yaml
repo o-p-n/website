@@ -60,10 +60,3 @@ jobs:
             DOCKER_CACHE=/tmp/.buildx-cache \
             DOCKER_REGISTRY=ghcr.io \
             IMAGE_TAG=${{ github.sha }}
-      - name: Create and Approve deployment PR
-        env:
-          GH_TOKEN: ${{ steps.gentoken.outputs.token }}
-          GIT_USER_NAME: o-p-n-release-manager[bot]
-          GIT_USER_EMAIL: ${{ secrets.RELEASE_MANAGER_APP_ID }}+o-p-n-release-manager[bot]@noreply.users.github.com
-          GIT_SHA: ${{ github.sha }}
-        run: .github/scripts/patch-image.sh
