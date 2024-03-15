@@ -9,7 +9,7 @@ vars:
   DOCKER_CONTEXT: '{{ default "default" .DOCKER_CONTEXT }}'
   DOCKER_METADATA: '{{ default "target/metadata.json" .DOCKER_METADATA }}'
 
-  DEFAULT_EPOCH: '{{ now | unixEpoch }}'
+  DEFAULT_EPOCH: 0
 
   IMAGE_REPOSITORY: o-p-n/website
   SOURCE_EPOCH: '{{ coalesce .SOURCE_EPOCH .DEFAULT_EPOCH }}'
