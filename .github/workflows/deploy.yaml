@@ -54,7 +54,7 @@ jobs:
         run: |
           mkdir -p ~/.kube
           ssh ${{ matrix.hostname }} /snap/bin/microk8s config \
-            | sed -e 's/server: https:\/\/.*:/https:\/\/${{ matrix.hostname }}:/' \
+            | sed -e 's/server: https:\/\/.*:/server: https:\/\/${{ matrix.hostname }}:/' \
             > ~/.kube/config
       - name: Deploy ${{ matrix.environment }}
         run: |
