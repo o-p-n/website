@@ -20,11 +20,11 @@ jobs:
             hostname: outer-planes.net
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
       - name: Setup Task
-        uses: arduino/setup-task@v1
+        uses: arduino/setup-task@v2
         with:
           version: 3.x
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -39,10 +39,6 @@ jobs:
         env:
           INSTALL_PATH: /usr/local/bin
           GH_TOKEN: ${{ github.token }}
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          submodules: true
       - name: Prepare SSH
         run: |
           mkdir -p ~/.ssh
@@ -52,7 +48,7 @@ jobs:
           Host *
             User ${{ secrets.DEPLOYMENT_SSH_USERNAME }}
             IdentityFile ~/.ssh/deploy.key
-            StrictHostChecking no
+            StrictHostKeyChecking no
           ---EOF---
       - name: Prepare Kubectl
         run: |
