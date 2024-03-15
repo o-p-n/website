@@ -2,6 +2,12 @@
 
 set -euo pipefail
 
+loggit() {
+  echo "$@" 1>&2
+}
+
+INSTALL_PATH="${INSTALL_PATH:-$HOME/bin}"
+
 PLATFORM_ARCH=$(uname -m)
 PLATFORM_OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 
@@ -29,8 +35,9 @@ esac
 
 PLATFORM="${PLATFORM_ARCH}-${PLATFORM_OS}"
 
-pushd /usr/local/bin
+pushd ${INSTALL_PATH}
 
+loggit "downloading+installing latest deployer ..."
 gh --repo o-p-n/deployer release download \
     -p "*-${PLATFORM}.tar.gz" -O - \
   | tar xzf -
