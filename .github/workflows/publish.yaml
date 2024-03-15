@@ -59,6 +59,7 @@ jobs:
           task kustomize \
             DOCKER_CACHE=/tmp/.buildx-cache \
             DOCKER_REGISTRY=ghcr.io \
+            IMAGE_TAG=${{ github.sha }}
       - name: Create and Approve deployment PR
         env:
           GH_TOKEN: ${{ steps.gentoken.outputs.token }}
