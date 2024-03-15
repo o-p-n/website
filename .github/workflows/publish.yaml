@@ -55,8 +55,9 @@ jobs:
           restore-keys: |
             buildx-${{ runner.os }}
       - name: Build and publish image
+        env:
+          DOCKER_CACHE: /tmp/.buildx-cache
+          DOCKER_REGISTRY: ghcr.io
+          IMAGE_TAG: ${{ github.sha }}
         run: |
-          task kustomize \
-            DOCKER_CACHE=/tmp/.buildx-cache \
-            DOCKER_REGISTRY=ghcr.io \
-            IMAGE_TAG=${{ github.sha }}
+          task kustomize
