@@ -32,9 +32,13 @@ jobs:
         run: .github/scripts/install-kubectl.sh
         env:
           INSTALL_PATH: /usr/local/bin
+          GH_TOKEN: ${{ github.token }}
       - name: Setup Deployer
         # TODO: convert into an action
         run: .github/scripts/install-deployer.sh
+        env:
+          INSTALL_PATH: /usr/local/bin
+          GH_TOKEN: ${{ github.token }}
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -53,9 +57,10 @@ jobs:
       - name: Prepare Kubectl
         run: |
           mkdir -p ~/.kube
-          ssh ${{ matrix.hostname }} /snap/bin/microk8s config | sed 's/server: https:\/\/.*:/https:\/\/127.0.0.1:/' > ~/.kube/config
+          ssh ${{ matrix.hostname }} /snap/bin/microk8s config \
+            | sed -e 's/server: https:\/\/.*:/https:\/\/${{ matrix.hostname }}:/' \
+            > ~/.kube/config
       - name: Deploy ${{ matrix.environment }}
         run: |
-          ssh -L 16443:localhost:16443 -N -f ${{ matrix.hostname }}
           o-p-n.deployer apply --env ${{ matrix.environment }}
           exit 0
