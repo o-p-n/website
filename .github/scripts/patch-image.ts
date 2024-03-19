@@ -44,12 +44,12 @@ class Patcher {
   readonly repo: Repository;
   readonly base: string;
 
-  constructor(full: string | Repository, target: string) {
+  constructor(full: string | Repository, target: string, auth: string) {
     this.repo = Repository.from(full);
     this.base = target;
 
     this.#api = new Octokit({
-      auth: Deno.env.get("GITHUB_TOKEN"),
+      auth,
     });
   }
 
@@ -265,18 +265,26 @@ class Patcher {
 }
 
 if (import.meta.main) {
+  const auth = Deno.env.get("GITHUB_TOKEN");
+  if (!auth) {
+    console.log("access token not set (GITHUB_TOKEN)");
+    Deno.exit(10);
+  }
   const repository = Deno.env.get("GITHUB_REPOSITORY");
   if (!repository) {
-    throw new Error("repository not found (GITHUB_REPOSITORY)");
+    console.log("repository not found (GITHUB_REPOSITORY)");
+    Deno.exit(11);
   }
   const baseRef = Deno.env.get("GITHUB_REF_NAME");
   if (!baseRef) {
-    throw new Error("reference not found (GITHUB_REF_NAME)");
+    console.log("reference not found (GITHUB_REF_NAME)");
+    Deno.exit(12);
   }
 
   const patcher = new Patcher(
     repository,
     baseRef,
+    auth,
   );
   await patcher.run();
 }
