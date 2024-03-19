@@ -43,12 +43,10 @@ class Patcher {
 
   readonly repo: Repository;
   readonly base: string;
-  readonly commit: string;
 
-  constructor(full: string | Repository, target: string, commit: string) {
+  constructor(full: string | Repository, target: string) {
     this.repo = Repository.from(full);
     this.base = target;
-    this.commit = commit;
 
     this.#api = new Octokit({
       auth: Deno.env.get("GITHUB_TOKEN"),
@@ -64,6 +62,11 @@ class Patcher {
       if (!line) { continue; }
 
       const [mode, path] = line.trim().split(/\s+/g, 2);
+      if (!path || path.endsWith("deno.lock")) {
+        // skipping empty path and lockfile ...
+        continue;
+      }
+
       const content = await (async (mode: string) => {
         switch (mode) {
           case "D": // deleted file
@@ -139,6 +142,15 @@ class Patcher {
     return rsp.data;
   }
 
+  async getBranch(ref: string) {
+    const rsp = await this.#api.request("GET /repos/{owner}/{repo}/git/refs/heads/{ref}", {
+      ...this.repo.toObject(),
+      ref,
+    });
+
+    return rsp.data;
+  }
+
   async createBranch(name: string, sha: string) {
     const rsp = await this.#api.request("POST /repos/{owner}/{repo}/git/refs", {
       ...this.repo.toObject(),
@@ -203,7 +215,7 @@ class Patcher {
      *    b. merge PR
      */
 
-    console.log(`checking status of "${this.repo.toString()}" at "${this.commit}"...`);
+    console.log(`checking status of "${this.repo.toString()}" on branch "${this.base}"...`);
     // STEP 1: check status
     const status = await this.checkStatus();
     if (status.length === 0) {
@@ -211,12 +223,14 @@ class Patcher {
       return;
     }
 
-    // calculate a "short sha"
-    const short = this.commit.substring(0, 8);
-    console.log(`create PR to deploy ${short} ...`);
-
     // obtain baseline
-    const baseCommit = await this.getCommit(this.commit);
+    const baseRef = await this.getBranch(this.base);
+    const baseCommit = await this.getCommit(baseRef.object.sha);
+    const fullSha = baseCommit.sha;
+
+    // calculate a "short sha"
+    const shortSha = fullSha.substring(0, 8);
+    console.log(`create PR to deploy ${fullSha} ...`);
 
     console.log("save changes ...");
     // STEP 2: create deploy branch
@@ -231,14 +245,14 @@ class Patcher {
 
     console.log("create branch of commit ...");
     // STEP 2.c: create branch
-    const head = `deploy-${short}`;
+    const head = `deploy-${shortSha}`;
     const _branch = await this.createBranch(head, commit.sha);
     console.log(`... created branch ${head}`);
 
     console.log(`create PR for ${head}...`);
     // STEP 3: create + merge PR
     // STEP 3.a: create PR
-    const pr = await this.createPR(head, `chore: deploy ${short}`, );
+    const pr = await this.createPR(head, `chore: deploy ${shortSha}`, );
     console.log(`... created PR ${pr.number}`);
 
     /*
@@ -252,10 +266,18 @@ class Patcher {
 }
 
 if (import.meta.main) {
+  const repository = Deno.env.get("GITHUB_REPOSITORY");
+  if (!repository) {
+    throw new Error("repository not found (GITHUB_REPOSITORY)");
+  }
+  const baseRef = Deno.env.get("GITHUB_REF_NAME");
+  if (!baseRef) {
+    throw new Error("reference not found (GITHUB_REF_NAME)");
+  }
+
   const patcher = new Patcher(
-    Deno.env.get("GITHUB_REPOSITORY") || "",
-    Deno.env.get("GITHUB_REF_NAME") || "main",
-    Deno.env.get("GITHUB_SHA") || "",
+    repository,
+    baseRef,
   );
   await patcher.run();
 }
