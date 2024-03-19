@@ -70,13 +70,13 @@ class Patcher {
       const content = await (async (mode: string) => {
         switch (mode) {
           case "D": // deleted file
-            console.log(`🚫 deleting ${path}`)
+            console.log(`    🚫 deleting ${path}`)
             return null;
           case "M": // modified/updated file
-            console.log(`💾 modifying ${path}`);
+            console.log(`    💾 modifying ${path}`);
             return await Deno.readTextFile(path);
           case "??": // added file
-            console.log(`💾 adding ${path}`);
+            console.log(`    💾 adding ${path}`);
             return await Deno.readTextFile(path);
           default:
             throw new Error(`unexpected status mode: ${mode}`);
@@ -232,36 +232,35 @@ class Patcher {
     const shortSha = fullSha.substring(0, 8);
     console.log(`create PR to deploy ${fullSha} ...`);
 
-    console.log("save changes ...");
+    console.log("🌳 save changes ...");
     // STEP 2: create deploy branch
     // STEP 2.a: create tree
     const tree = await this.createTree(baseCommit.tree.sha,  status);
     console.log(`... saved to ${tree.sha}`);
 
-    console.log("create commit of changes ...");
+    console.log("🔒 create commit of changes ...");
     // STEP 2.b: create commit
     const commit = await this.createCommit(tree.sha, baseCommit.sha);
     console.log(`... commit ${commit.sha} created (verified? ${commit.verification.verified})`);
 
-    console.log("create branch of commit ...");
+    console.log("📦 create branch of commit ...");
     // STEP 2.c: create branch
     const head = `deploy-${shortSha}`;
     const _branch = await this.createBranch(head, commit.sha);
     console.log(`... created branch ${head}`);
 
-    console.log(`create PR for ${head}...`);
+    console.log(`🚚 create PR for ${head}...`);
     // STEP 3: create + merge PR
     // STEP 3.a: create PR
     const pr = await this.createPR(head, `chore: deploy ${shortSha}`, );
     console.log(`... created PR ${pr.number}`);
 
-    /*
-    console.og("merge PR ...");
+    console.log(`🚀 merge PR ${pr.number} ...`);
     // STEP 3.b: merge PR
     await this.mergePR(pr.number);
-    //*/
+    console.log("... merge requested");
 
-    console.log("DONE");
+    console.log("🎉 DONE");
   }
 }
 
