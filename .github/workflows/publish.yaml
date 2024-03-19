@@ -61,3 +61,8 @@ jobs:
           IMAGE_TAG: ${{ github.sha }}
         run: |
           task kustomize
+      - name: Prepare deployment
+        env:
+          GITHUB_TOKEN: ${{ steps.gentoken.outputs.token }}
+        run: |
+          deno run -allow-all --no-lock ./.github/scripts/patch-image.ts
