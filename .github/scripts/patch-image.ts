@@ -183,13 +183,13 @@ class Patcher {
   }
 
   async mergePR(pull_number: number) {
-    const rsp = await this.#api.rest.pulls.merge({
-      ...this.repo.toObject(),
-      merge_method: "squash",
-      pull_number,
-    });
+    const repo = this.repo;
 
-    return rsp.data;
+    const query = await this.#api.graphql(`query { repository(owner: "${repo.owner}", name: "${repo.repo}") { pullRequest(number: ${pull_number}) { id } } }`);
+    // deno-lint-ignore no-explicit-any
+    const prId = (query as any).repository.pullRequest.id;
+
+    const _result = await this.#api.graphql(`mutation { enablePullRequestAutoMerge(input: {pullRequestId: "${prId}", mergeMethod: SQUASH}) { clientMutationId } }`);
   }
 
   async run() {
