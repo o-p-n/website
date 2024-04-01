@@ -295,7 +295,7 @@ if (import.meta.main) {
     baseRef,
     auth,
   );
-  const direct = Deno.env.get("DIRECT_COMMIT");
+  const direct = Deno.env.get("COMMIT_DIRECT");
   if (direct === "yes") {
     patcher.direct = true;
   }
