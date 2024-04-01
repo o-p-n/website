@@ -23,17 +23,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
-      - name: Setup Task
-        uses: arduino/setup-task@v2
-        with:
-          version: 3.x
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Tooling
         # TODO: convert into an action
-        run: .github/scripts/install-tooling.sh
+        run: ./.github/scripts/install-tooling.sh
         env:
           INSTALL_PATH: /usr/local/bin
-          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Prepare SSH
         run: |
           mkdir -p ~/.ssh
