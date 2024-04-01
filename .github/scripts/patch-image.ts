@@ -44,6 +44,8 @@ class Patcher {
   readonly repo: Repository;
   readonly base: string;
 
+  direct = false;
+
   constructor(full: string | Repository, target: string, auth: string) {
     this.repo = Repository.from(full);
     this.base = target;
@@ -243,22 +245,29 @@ class Patcher {
     const commit = await this.createCommit(tree.sha, baseCommit.sha);
     console.log(`... commit ${commit.sha} created (verified? ${commit.verification.verified})`);
 
-    console.log("📦 create branch of commit ...");
-    // STEP 2.c: create branch
-    const head = `deploy-${shortSha}`;
-    const _branch = await this.createBranch(head, commit.sha);
-    console.log(`... created branch ${head}`);
-
-    console.log(`🚚 create PR for ${head}...`);
-    // STEP 3: create + merge PR
-    // STEP 3.a: create PR
-    const pr = await this.createPR(head, `chore: deploy ${shortSha}`, );
-    console.log(`... created PR ${pr.number}`);
-
-    console.log(`🚀 merge PR ${pr.number} ...`);
-    // STEP 3.b: merge PR
-    await this.mergePR(pr.number);
-    console.log("... merge requested");
+    if (this.direct) {
+      // STEP 2.c: update 'main' ref
+      console.log(`⬆ push commit to '${this.base}' ...`);
+      const _ = await this.updateBranch(this.base, commit.sha);
+      console.log(`... commit ${commit.sha} pushed to '${this.base}'`);
+    } else {
+      console.log("📦 create branch of commit ...");
+      // STEP 2.c: create branch
+      const head = `deploy-${shortSha}`;
+      const _branch = await this.createBranch(head, commit.sha);
+      console.log(`... created branch ${head}`);
+  
+      console.log(`🚚 create PR for ${head}...`);
+      // STEP 3: create + merge PR
+      // STEP 3.a: create PR
+      const pr = await this.createPR(head, `chore: deploy ${shortSha}`, );
+      console.log(`... created PR ${pr.number}`);
+  
+      console.log(`🚀 merge PR ${pr.number} ...`);
+      // STEP 3.b: merge PR
+      await this.mergePR(pr.number);
+      console.log("... merge requested");
+    }
 
     console.log("🎉 DONE");
   }
@@ -286,5 +295,9 @@ if (import.meta.main) {
     baseRef,
     auth,
   );
+  const direct = Deno.env.get("DIRECT_COMMIT");
+  if (direct === "yes") {
+    patcher.direct = true;
+  }
   await patcher.run();
 }
