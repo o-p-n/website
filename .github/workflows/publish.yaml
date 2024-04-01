@@ -60,6 +60,5 @@ jobs:
       - name: Prepare deployment
         env:
           GITHUB_TOKEN: ${{ steps.gentoken.outputs.token }}
-          COMMIT_DIRECT: yes
         run: |
           deno run --allow-all ./.github/scripts/patch-image.ts
