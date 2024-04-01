@@ -31,10 +31,6 @@ jobs:
         env:
           INSTALL_PATH: /usr/local/bin
           GITHUB_TOKEN: ${{ steps.gentoken.outputs.token }}
-      - name: Setup Deno
-        uses: denoland/setup-deno@v1
-        with:
-          deno-version: 1.39.2
       - name: Setup QEMU
         uses: docker/setup-qemu-action@v3
       - name: Setup Docker Buildx
