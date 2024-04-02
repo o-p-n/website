@@ -26,6 +26,8 @@ jobs:
         with:
           submodules: true
           token: ${{ steps.gentoken.outputs.token }}
+          fetch-depth: 0
+          fetch-tags: false
       - name: Setup Tooling
         run: ./.github/scripts/install-tooling.sh
         env:
