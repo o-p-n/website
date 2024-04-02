@@ -82,9 +82,9 @@ emphasis: *Mollis Tristique*
 
 strong: **Sollicitudin Cras**
 
-code: `Consectetur Ullamcorper`
-
 strikethorugh: ~~Parturient Ipsum~~
+
+code: `Consectetur Ullamcorper`
 
 link: [Tortor Mollis](https://example.com)
 
