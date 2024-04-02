@@ -2,7 +2,8 @@
   "imports": {
     "lume/": "https://deno.land/x/lume@v2.0.3/",
     "markdown-it-container": "npm:markdown-it-container",
-    "markdown-it-footnote": "npm:markdown-it-footnote"
+    "markdown-it-footnote": "npm:markdown-it-footnote",
+    "dax": "https://deno.land/x/dax@0.39.2/mod.ts"
   },
   "tasks": {
     "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable -A -",
