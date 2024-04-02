@@ -25,6 +25,14 @@ site.use(sass({
   format: "expanded",
 }));
 site.use(nunjucks());
+site.preprocess([".md"], async (pages) => {
+  for (const p of pages) {
+    const path = p.src.entry?.src || "";
+    if (!path) { continue }
+    const stat = await Deno.stat(path);
+    console.log(`${p.src.path} times: created=${stat.birthtime?.toISOString()}, modified=${stat.mtime?.toISOString()}`);
+  }
+});
 
 site.copyRemainingFiles();
 site.copy("assets");
