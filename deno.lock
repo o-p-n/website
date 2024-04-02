@@ -3,6 +3,7 @@
   "packages": {
     "specifiers": {
       "npm:@js-temporal/polyfill@0.4.4": "npm:@js-temporal/polyfill@0.4.4",
+      "npm:@types/nunjucks@3.2.6": "npm:@types/nunjucks@3.2.6",
       "npm:date-fns@2.30.0": "npm:date-fns@2.30.0",
       "npm:markdown-it-attrs@4.1.6": "npm:markdown-it-attrs@4.1.6_markdown-it@13.0.1",
       "npm:markdown-it-container": "npm:markdown-it-container@3.0.0",
@@ -250,6 +251,10 @@
       },
       "@types/node@18.16.19": {
         "integrity": "sha512-IXl7o+R9iti9eBW4Wg2hx1xQDig183jj7YLn8F7udNceyfkbn1ZxmzZXuak20gR40D7pIkIY1kYGx5VIGbaHKA==",
+        "dependencies": {}
+      },
+      "@types/nunjucks@3.2.6": {
+        "integrity": "sha512-pHiGtf83na1nCzliuAdq8GowYiXvH5l931xZ0YEHaLMNFgynpEqx+IPStlu7UaDkehfvl01e4x/9Tpwhy7Ue3w==",
         "dependencies": {}
       },
       "a-sync-waterfall@1.0.1": {
