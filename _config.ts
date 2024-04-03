@@ -1,13 +1,10 @@
 import lume from "lume/mod.ts";
 import date from "lume/plugins/date.ts";
-import relations from "lume/plugins/relations.ts";
 import sass from "lume/plugins/sass.ts";
 import nunjucks from "lume/plugins/nunjucks.ts";
 
 import mdContainer from "markdown-it-container";
 import mdFootnote from "markdown-it-footnote";
-
-import $ from "dax";
 
 const markdown = {
   plugins: [
@@ -22,7 +19,6 @@ const site = lume({
 }, { markdown });
 
 site.use(date());
-site.use(relations());
 site.use(sass({
   format: "expanded",
 }));
