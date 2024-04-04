@@ -14,7 +14,22 @@ includes:
     taskfile: ./.builder/docker/taskfile.yaml
 
 tasks:
+  default: task --list
+
+  clean.site:
+    cmds:
+      - git clean -dfx _site
+  clean.image:
+    cmds:
+      - git clean -dfx target
+  clean:
+    desc: Cleans the outputs
+    deps:
+      - clean.site
+      - clean.image
+
   build:
+    desc: Builds the website
     vars:
       SOURCE_DATE: '{{ .SOURCE_DATE }}'
     sources:
@@ -29,6 +44,7 @@ tasks:
       - find _site | xargs -I{} touch -c -d "{{ .SOURCE_DATE }}Z" {}
 
   image:
+    desc: Assembles the 'website' container image
     deps:
       - build
     sources:
@@ -85,18 +101,21 @@ tasks:
           K8S_REGISTRY: '{{ .K8S_REGISTRY }}'
 
   kustomize:
+    desc: Updates kustomize deployment for built image
     deps:
       - image
     cmds:
       - task: kustomize.only
 
   deploy.only:
+    desc: Deploys kubernetes manifests to {{default "<ENV>" .ENV}} cluster
     env:
       ENV: '{{.ENV}}'
     cmds:
       - o-p-n.deployer apply --env {{.ENV}}
 
   deploy.local:
+    desc: Deploys kubernetes manifests to local cluster
     vars:
       ENV: local
       K8S_REGISTRY: host.minikube.internal:5000
