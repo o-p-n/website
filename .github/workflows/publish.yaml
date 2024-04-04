@@ -7,7 +7,8 @@ on:
       - "k8s/**"
 
 env:
-  DENO_DIR: /tmp/.deno-cache
+  BUILDX_DIR: /tmp/cache/buildx
+  DENO_DIR: /tmp/cache/deno
 
 jobs:
   publish-image:
@@ -51,7 +52,7 @@ jobs:
       - name: Setup Buildx Caching
         uses: actions/cache@v4
         with:
-          path: /tmp/cache/buildx
+          path: ${{ env.BUILDX_DIR }}
           key: buildx-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             buildx-${{ runner.os }}
@@ -65,7 +66,7 @@ jobs:
       - name: Build and publish image
         env:
           DENO_DIR: ${{ env.DENO_DIR }}
-          DOCKER_CACHE: /tmp/.buildx-cache
+          DOCKER_CACHE: ${{ env.BUILDX_DIR }}
           DOCKER_REGISTRY: ghcr.io
           IMAGE_TAG: ${{ github.sha }}
         run: |

@@ -5,7 +5,8 @@ on:
       - main
 
 env:
-  DENO_DIR: /tmp/.cache/deno
+  BUILDX_DIR: /tmp/cache/buildx
+  DENO_DIR: /tmp/cache/deno
 
 jobs:
   build-image:
@@ -30,7 +31,7 @@ jobs:
       - name: Setup Buildx Caching
         uses: actions/cache@v4
         with:
-          path: /tmp/cache/buildx
+          path: ${{ env.BUILDX_DIR }}
           key: buildx-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             buildx-${{ runner.os }}
@@ -43,6 +44,6 @@ jobs:
             deno-${{ runner.os }}
       - name: Build image
         env:
-          DOCKER_CACHE: /tmp/.buildx-cache
+          DOCKER_CACHE: ${{ env.BUILDX_DIR }}
         run: |
           task image
