@@ -1,5 +1,5 @@
 ---
-templateEngine: [njk, md]
+templateEngine: [vto, md]
 ---
 Welcome weary traveler, to the
 
