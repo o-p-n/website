@@ -6,6 +6,10 @@ on:
     paths-ignore:
       - "k8s/**"
 
+env:
+  BUILDX_DIR: /tmp/cache/buildx
+  DENO_DIR: /tmp/cache/deno
+
 jobs:
   publish-image:
     name: Publish image
@@ -22,7 +26,7 @@ jobs:
           app-id: ${{ secrets.RELEASE_MANAGER_APP_ID }}
           private-key: ${{ secrets.RELEASE_MANAGER_PRIVATE_KEY }}
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
           token: ${{ steps.gentoken.outputs.token }}
@@ -45,16 +49,24 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Setup Caching
-        uses: actions/cache@v3
+      - name: Setup Buildx Caching
+        uses: actions/cache@v4
         with:
-          path: /tmp/.buildx-cache
+          path: ${{ env.BUILDX_DIR }}
           key: buildx-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             buildx-${{ runner.os }}
+      - name: Setup Deno Caching
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.DENO_DIR }}
+          key: deno-${{ hashFiles('deno.*') }}
+          restore-keys: |
+            deno
       - name: Build and publish image
         env:
-          DOCKER_CACHE: /tmp/.buildx-cache
+          DENO_DIR: ${{ env.DENO_DIR }}
+          DOCKER_CACHE: ${{ env.BUILDX_DIR }}
           DOCKER_REGISTRY: ghcr.io
           IMAGE_TAG: ${{ github.sha }}
         run: |
@@ -62,5 +74,6 @@ jobs:
       - name: Prepare deployment
         env:
           GITHUB_TOKEN: ${{ steps.gentoken.outputs.token }}
+          DENO_DIR: ${{ env.DENO_DIR }}
         run: |
           deno run --allow-all ./.github/scripts/patch-image.ts

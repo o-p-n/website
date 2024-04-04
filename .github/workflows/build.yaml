@@ -4,13 +4,17 @@ on:
     branches:
       - main
 
+env:
+  BUILDX_DIR: /tmp/cache/buildx
+  DENO_DIR: /tmp/cache/deno
+
 jobs:
   build-image:
     name: Build image
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
       - name: Setup Tooling
@@ -19,20 +23,28 @@ jobs:
           INSTALL_PATH: /usr/local/bin
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           driver-opts: network=host
-      - name: Setup Caching
-        uses: actions/cache@v3
+      - name: Setup Buildx Caching
+        uses: actions/cache@v4
         with:
-          path: /tmp/.buildx-cache
+          path: ${{ env.BUILDX_DIR }}
           key: buildx-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             buildx-${{ runner.os }}
+      - name: Setup Deno Caching
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.DENO_DIR }}
+          key: deno-${{ hashFiles('deno.*') }}
+          restore-keys: |
+            deno
       - name: Build image
         env:
-          DOCKER_CACHE: /tmp/.buildx-cache
+          DENO_DIR: ${{ env.DENO_DIR }}
+          DOCKER_CACHE: ${{ env.BUILDX_DIR }}
         run: |
           task image
