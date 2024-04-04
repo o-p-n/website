@@ -6,6 +6,9 @@ on:
     paths-ignore:
       - "k8s/**"
 
+env:
+  DENO_DIR: /tmp/.deno-cache
+
 jobs:
   publish-image:
     name: Publish image
@@ -46,7 +49,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Caching
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: /tmp/.buildx-cache
           key: buildx-${{ runner.os }}-${{ github.sha }}
