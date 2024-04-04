@@ -60,9 +60,9 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ env.DENO_DIR }}
-          key: deno-${{ runner.os }}-${{ hashFiles('deno.*') }}
+          key: deno-${{ hashFiles('deno.*') }}
           restore-keys: |
-            deno-${{ runner.os }}
+            deno
       - name: Build and publish image
         env:
           DENO_DIR: ${{ env.DENO_DIR }}
