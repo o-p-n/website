@@ -48,15 +48,23 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Setup Caching
+      - name: Setup Buildx Caching
         uses: actions/cache@v4
         with:
-          path: /tmp/.buildx-cache
+          path: /tmp/cache/buildx
           key: buildx-${{ runner.os }}-${{ github.sha }}
           restore-keys: |
             buildx-${{ runner.os }}
+      - name: Setup Deno Caching
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.DENO_DIR }}
+          key: deno-${{ runner.os }}-${{ github.sha }}
+          restore-keys: |
+            deno-${{ runner.os }}
       - name: Build and publish image
         env:
+          DENO_DIR: ${{ env.DENO_DIR }}
           DOCKER_CACHE: /tmp/.buildx-cache
           DOCKER_REGISTRY: ghcr.io
           IMAGE_TAG: ${{ github.sha }}
@@ -65,5 +73,6 @@ jobs:
       - name: Prepare deployment
         env:
           GITHUB_TOKEN: ${{ steps.gentoken.outputs.token }}
+          DENO_DIR: ${{ env.DENO_DIR }}
         run: |
           deno run --allow-all ./.github/scripts/patch-image.ts
