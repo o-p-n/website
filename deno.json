@@ -1,13 +1,17 @@
 {
   "imports": {
-    "lume/": "https://deno.land/x/lume@v2.0.3/",
+    "lume/": "https://deno.land/x/lume@v2.1.3/",
     "markdown-it-container": "npm:markdown-it-container",
-    "markdown-it-footnote": "npm:markdown-it-footnote",
-    "dax": "https://deno.land/x/dax@0.39.2/mod.ts"
+    "markdown-it-footnote": "npm:markdown-it-footnote"
   },
   "tasks": {
-    "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable -A -",
+    "lume": "echo \"import 'lume/cli.ts'\" | deno run -A -",
     "build": "deno task lume",
     "serve": "deno task lume -s"
+  },
+  "compilerOptions": {
+    "types": [
+      "lume/types.ts"
+    ]
   }
 }

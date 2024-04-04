@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{%if title %}{{title}} :: {% endif %}{{ site.title }}</title>
+    <title>{{if title }}{{title}} :: {{ /if }}{{ site.title }}</title>
     <meta charset="utf-8"/>
     <meta itemprop="created" content="{{ date.toISOString() }}"/>
     <link rel="stylesheet" href="/styles/main.css" />
-    <style>{{ style | safe }}</style>
+    <style>{{ style }}</style>
   </head>
   <body>
-    {{ content | safe }}
+    {{ content }}
   </body>
 </html>
