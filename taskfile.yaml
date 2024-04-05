@@ -41,7 +41,6 @@ tasks:
       - _site/**
     cmds:
       - deno task build
-      - find _site | xargs -I{} touch -c -d "{{ .SOURCE_DATE }}Z" {}
 
   image:
     desc: Assembles the 'website' container image
