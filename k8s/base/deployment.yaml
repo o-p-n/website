@@ -19,7 +19,7 @@ spec:
       - name: website
         # image:  host.minikube.internal:5000/o-p-n/website:latest
         # image:  ghcr.io/o-p-n/website@sha256:2f6398d11eb0d37ce38ff7f7851890d147079dbfadb79da598f02f66e3c67e67
-        imagePullPolicy: Always
+        imagePullPolicy: IfNotPresent
         resources:
           requests:
             memory: "64Mi"
