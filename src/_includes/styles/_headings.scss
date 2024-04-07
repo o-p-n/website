@@ -1,7 +1,5 @@
-@use "./vars";
-
 h1, h2, h3, h4, h5, h6 {
-  font-family: vars.$font-headline;
+  font-family: var(--font-heading);
   margin: 0px;
   margin-block: 1.5rem 0.5rem;
 }
