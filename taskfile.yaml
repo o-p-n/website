@@ -37,9 +37,8 @@ tasks:
       - _config.ts
       - deno.json
       - deno.lock
-    generates:
-      - _site/**
     cmds:
+      - task: clean.site
       - deno task build
 
   image:
@@ -49,8 +48,6 @@ tasks:
     sources:
       - _site/**
       - Dockerfile
-    generates:
-      - target/image.tar
     vars:
       IMAGE_TAG: '{{ .IMAGE_TAG }}'
       IMAGE_REPOSITORY: '{{ .IMAGE_REPOSITORY }}'
@@ -67,10 +64,6 @@ tasks:
       IMAGE_DIGEST:
         sh: cat {{ .DOCKER_METADATA }} | jq -r '."containerimage.digest"'
       IMAGE: '{{ .K8S_REGISTRY }}/{{ .IMAGE_REPOSITORY }}@{{ .IMAGE_DIGEST }}'
-    sources:
-      - '{{ .DOCKER_METADATA }}'
-    generates:
-      - k8s/env/{{ .ENV }}/deployment-image-patch.yaml
     cmds:
       - |
         cat << ---EOF--- > k8s/env/{{ .ENV }}/deployment-image-patch.yaml

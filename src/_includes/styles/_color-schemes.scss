@@ -1,0 +1,70 @@
+@use "./vars";
+
+$color-primary-dark: #0c0c0c;
+$color-secondary-dark: #481e14;
+$color-tertiary-dark: #9b3922;
+$color-highlight-dark: #f2613f;
+
+$color-primary-light: #e3fef7;
+$color-secondary-light: #77b0aa;
+$color-tertiary-light: #135d66;
+$color-highlight-light: #003c43;
+
+$color-callout-info:#b0a8e4;
+$color-callout-warning: #ff6a65;
+
+:root {
+  // default to light-mode
+  color-scheme: light;
+
+  --color-text: #{$color-primary-dark};
+  --color-background: #{$color-primary-light};
+  --color-border: #{$color-highlight-light};
+
+  --color-link: #{$color-secondary-dark};
+  --color-link-hover: #{$color-highlight-dark};
+
+  --color-highlight-text: #{$color-secondary-dark};
+  --color-highlight-background: #{$color-secondary-light};
+
+  --color-table-header-background: #{$color-highlight-light};
+  --color-table-header-text: #{$color-primary-light};
+
+  --color-table-data-bg-odd: #{$color-primary-light};
+  --color-table-data-background-even: #{$color-secondary-light};
+
+  --color-callout-background: #{$color-tertiary-light};
+  --color-callout-text: #{$color-primary-light};
+
+  --color-info-background: #{$color-callout-info};
+  --color-info-text: #{$color-primary-light};
+  
+  --color-warning-background: #{$color-callout-warning};
+  --color-warning-text: #{$color-primary-light};
+  
+  // override in dark-mode
+  @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
+
+    --color-text: #{$color-primary-light};
+    --color-background: #{$color-primary-dark};
+    --color-border: #{$color-tertiary-dark};
+
+    --color-link: #{$color-secondary-light};
+    --color-link-hover: #{$color-primary-light};
+
+    --color-highlight-text: #{$color-secondary-light};
+    --color-highlight-background: #{$color-secondary-dark};
+    
+    --color-table-header-background: #{$color-tertiary-dark};
+    --color-table-header-text: #{$color-primary-dark};
+  
+    --color-table-data-bg-odd: #{$color-primary-dark};
+    --color-table-data-background-even: #{$color-secondary-dark};
+  
+    --color-callout-background: #{$color-tertiary-dark};
+    --color-callout-text: #{$color-primary-dark};
+  }
+}
+
+

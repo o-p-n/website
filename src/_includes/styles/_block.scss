@@ -10,12 +10,17 @@ blockquote {
   margin-block: 1rem;
   padding-inline-start: 1.5rem;
   padding-block: 0.5rem;
-  border-inline-start: 0.5rem solid vars.$border-color;
-  background-color: vars.$highlight-color;
+  border-inline-start: 0.5rem solid var(--color-border);
+  color: var(--color-highlight-text);
+  background-color: var(--color-highlight-background);
 
   >p {
     margin: 0px;
   }
+}
+
+hr {
+  border: 1px solid var(--color-border);
 }
 
 pre {
@@ -23,20 +28,24 @@ pre {
   margin-block: 1rem;
   padding-inline-start: 0.5rem;
   padding-block: 0.5rem;
-  background-color: vars.$highlight-color;
+  color: var(--color-highlight-text);
+  background-color: var(--color-highlight-background);
 }
 
 div.callout {
-  border: 1px solid vars.$border-color;
-  background-color: #efefef;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-callout-background);
+  color: var(--color-callout-text);
   margin-block: 0.5rem;
   padding: 0.5rem;
 
   &.info {
-    background-color: #dcdcef;
+    background-color: var(--color-info-background);
+    color: var(--color-info-text);
   }
   &.warning {
-    background-color: #efefdc;
+    background-color: var(--color-warning-background);
+    color: var(--color-warning-text);
   }
 }
 
@@ -45,7 +54,7 @@ dl {
     font-weight: bold;
   }
   >dd {
-    border-inline-start: 0.5rem solid vars.$border-color;
+    border-inline-start: 0.5rem solid var(--color-border);
     margin: 0px;
     padding-inline-start: 0.5rem;
   }

@@ -26,6 +26,26 @@ Donec sed odio dui. Maecenas faucibus mollis interdum.
 
 Donec sed odio dui. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum.
 
+# Inline Styles
+
+emphasis: *Mollis Tristique*
+
+strong: **Sollicitudin Cras**
+
+strikethorugh: ~~Parturient Ipsum~~
+
+code: `Consectetur Ullamcorper`
+
+link: [Tortor Mollis](https://example.com)
+
+# Special
+
+Morbi leo risus, porta ac consectetur ac, vestibulum[^1] at eros. Nullam id dolor id nibh ultricies[^note] vehicula ut id elit.
+
+[^1]: The first footnote
+
+[^note]: Nullam quis risus eget urna mollis ornare vel eu leo.
+
 # Block Styles
 
 Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Donec id elit non mi porta gravida at eget metus. Vestibulum id ligula porta felis euismod semper. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
@@ -60,6 +80,19 @@ Donec ullamcorper nulla non metus auctor fringilla. Donec ullamcorper nulla non 
 Term 1
 ~   Definition A
 
+# Tables
+
+| Column 1 | Column 2 | Column 3 |
+| -------- | -------- | -------- |
+| data 1.1 | data 1.2 | data 1.3 |
+| data 2.1 | data 2.2 | data 2.3 |
+| data 3.1 | data 3.2 | data 3.3 |
+
+| Left Column | Center Column | Right Column |
+| :---------- | :-----------: | -----------: |
+| left        | center        | right        |
+| left        | center        | right        |
+| left        | center        | right        |
 
 # Lists
 
@@ -75,23 +108,3 @@ Term 1
     a. Maecenas sed diam eget risus varius blandit sit amet non magna.
 
 3. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
-
-# Inline Styles
-
-emphasis: *Mollis Tristique*
-
-strong: **Sollicitudin Cras**
-
-strikethorugh: ~~Parturient Ipsum~~
-
-code: `Consectetur Ullamcorper`
-
-link: [Tortor Mollis](https://example.com)
-
-# Special
-
-Morbi leo risus, porta ac consectetur ac, vestibulum[^1] at eros. Nullam id dolor id nibh ultricies[^note] vehicula ut id elit.
-
-[^1]: The first footnote
-
-[^note]: Nullam quis risus eget urna mollis ornare vel eu leo.

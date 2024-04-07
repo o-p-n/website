@@ -1,0 +1,30 @@
+@use "./vars";
+
+table {
+  border: 1px solid var(--color-border);
+  margin: 0.5rem;
+  padding: 0;
+  border-spacing: 0;
+
+  td, th {
+    padding: 0.25rem 0.5rem;
+  }
+
+  thead {
+    th {
+      border-bottom: 1px solid var(--color-border);
+      color: var(--color-table-header-text);
+      background-color: var(--color-table-header-background);
+    }
+  }
+
+  tbody {
+    tr {
+      background-color: var(--table-data-bg-odd);
+
+      &:nth-child(even) {
+        background-color: var(--color-table-data-background-even);
+      }
+    }
+  }
+}
