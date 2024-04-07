@@ -1,3 +1,13 @@
 code {
   font-family: "Courier Prime", monospace;
 }
+
+a {
+  color: var(--color-link);
+  text-decoration-style: dotted;
+
+  &:hover {
+    color: var(--color-link-hover);
+    text-decoration-style: dashed;
+  }
+}
