@@ -8,4 +8,4 @@ spec:
     spec:
       containers:
       - name: website
-        image: ghcr.io/o-p-n/website@sha256:044ddff398c3fc8dda1d417336510557c6cb7f6123b841f533afbbbee803cebd
+        image: ghcr.io/o-p-n/website@sha256:3a72feced7839070c3bdf3c7e6a13161ab9f166b64f81df92e069c36f5904efb
