@@ -8,9 +8,9 @@
       "npm:date-fns@3.6.0": "npm:date-fns@3.6.0",
       "npm:estree-walker@3.0.3": "npm:estree-walker@3.0.3",
       "npm:markdown-it-attrs@4.1.6": "npm:markdown-it-attrs@4.1.6_markdown-it@14.1.0",
-      "npm:markdown-it-container": "npm:markdown-it-container@4.0.0",
+      "npm:markdown-it-container@4.0.0": "npm:markdown-it-container@4.0.0",
       "npm:markdown-it-deflist@3.0.0": "npm:markdown-it-deflist@3.0.0",
-      "npm:markdown-it-footnote": "npm:markdown-it-footnote@4.0.0",
+      "npm:markdown-it-footnote@4.0.0": "npm:markdown-it-footnote@4.0.0",
       "npm:markdown-it@14.1.0": "npm:markdown-it@14.1.0",
       "npm:meriyah@4.4.0": "npm:meriyah@4.4.0",
       "npm:nunjucks@3.2.4": "npm:nunjucks@3.2.4",
@@ -1323,11 +1323,5 @@
     "https://deno.land/x/vento@v0.12.4/src/loader.ts": "eb01b0dca7ea8bcdcdfd30b1f90f2fad28fb7f2cfd943900322a85bfaa86130c",
     "https://deno.land/x/vento@v0.12.4/src/tokenizer.ts": "acafb05ca528a27cb99bb1c34765362fc0a4dc2982848dd4b7983e27dcb17d69",
     "https://deno.land/x/vento@v0.12.4/src/transformer.ts": "91cad984c555fcd29c373bbf18599918114e0d011fda946306f6c0f56a22b482"
-  },
-  "workspace": {
-    "dependencies": [
-      "npm:markdown-it-container",
-      "npm:markdown-it-footnote"
-    ]
   }
 }

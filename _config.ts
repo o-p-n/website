@@ -2,16 +2,7 @@ import lume from "lume/mod.ts";
 import date from "lume/plugins/date.ts";
 import sass from "lume/plugins/sass.ts";
 
-import mdContainer from "markdown-it-container";
-import mdFootnote from "markdown-it-footnote";
-
-const markdown = {
-  plugins: [
-    [mdContainer, "callout"],
-    mdFootnote,
-  ],
-  keepDefaultPlugins: true,
-};
+import markdown from "./_config/markdown.ts";
 
 const site = lume({
   src: "src",
