@@ -1,15 +1,19 @@
 @use "./vars";
+@use "./color-schemes";
 @use "./typography";
 
-@use "./inline";
-@use "./block";
 @use "./headings";
+@use "./block";
+@use "./tables";
+@use "./inline";
 @use "./footnote";
 
-* {
+*, ::after, ::before {
   box-sizing: border-box;
 }
 
 html, body {
   font: 12pt vars.$font-normal;
+  color: var(--color-text);
+  background-color: var(--color-background);
 }
