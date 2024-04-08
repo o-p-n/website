@@ -2,6 +2,7 @@
   "version": "3",
   "packages": {
     "specifiers": {
+      "npm:@date-fns/utc@1.2.0": "npm:@date-fns/utc@1.2.0",
       "npm:@js-temporal/polyfill@0.4.4": "npm:@js-temporal/polyfill@0.4.4",
       "npm:@types/estree@1.0.5": "npm:@types/estree@1.0.5",
       "npm:@types/nunjucks@3.2.6": "npm:@types/nunjucks@3.2.6",
@@ -18,6 +19,10 @@
       "npm:sass@1.72.0": "npm:sass@1.72.0"
     },
     "npm": {
+      "@date-fns/utc@1.2.0": {
+        "integrity": "sha512-YLq+crMPJiBmIdkRmv9nZuZy1mVtMlDcUKlg4mvI0UsC/dZeIaGoGB5p/C4FrpeOhZ7zBTK03T58S0DFkRNMnw==",
+        "dependencies": {}
+      },
       "@js-temporal/polyfill@0.4.4": {
         "integrity": "sha512-2X6bvghJ/JAoZO52lbgyAPFj8uCflhTo2g7nkFzEQdXd/D8rEeD4HtmTEpmtGCva260fcd66YNXBOYdnmHqSOg==",
         "dependencies": {
