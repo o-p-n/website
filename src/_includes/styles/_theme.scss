@@ -1,5 +1,3 @@
-@use "./vars";
-
 $color-primary-dark: #0c0c0c;
 $color-secondary-dark: #481e14;
 $color-tertiary-dark: #9b3922;
@@ -14,6 +12,11 @@ $color-callout-info:#b0a8e4;
 $color-callout-warning: #ff6a65;
 
 :root {
+  // fonts
+  --font-normal: Verdana, Arial, sans-serif;
+  --font-heading: Diablo, Verdana, Arial, sans-serif;
+  --font-monospace: "Courier Prime", "Courier New", monospace;
+
   // default to light-mode
   color-scheme: light;
 
@@ -67,4 +70,35 @@ $color-callout-warning: #ff6a65;
   }
 }
 
+/* Diablo (like) */
+@font-face {
+  font-family: Diablo;
+  src: url("/assets/diablo-light.ttf");
+}
+@font-face {
+  font-family: Diablo;
+  src: url("/assets/diablo-heavy.ttf");
+  font-weight: bold;
+}
 
+/* Code/monospace */
+@font-face {
+  font-family: 'Courier Prime';
+  src: url("/assets/courier-prime.ttf");
+}
+@font-face {
+  font-family: 'Courier Prime';
+  src: url("/assets/courier-prime-bold.ttf");
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'Courier Prime';
+  src: url("/assets/courier-prime-italic.ttf");
+  font-style: italic;
+}
+@font-face {
+  font-family: 'Courier Prime';
+  src: url("/assets/courier-prime-bold-italic.ttf");
+  font-style: italic;
+  font-weight: bold;
+}
