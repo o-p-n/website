@@ -18,7 +18,7 @@ metadata:
 spec:
   parentRefs:
     - name: gateway
-      namespace: istio-public-ingress
+      namespace: public-ingress
       sectionName: https
   rules:
     - backendRefs:
