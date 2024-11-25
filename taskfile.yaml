@@ -110,8 +110,8 @@ tasks:
     desc: Deploys kubernetes manifests to local cluster
     vars:
       ENV: local
-      K8S_REGISTRY: host.minikube.internal:5000
-      DOCKER_REGISTRY: localhost:5000
+      K8S_REGISTRY: host.minikube.internal:12676
+      DOCKER_REGISTRY: localhost:12676
     cmds:
       - task: image
         vars:
