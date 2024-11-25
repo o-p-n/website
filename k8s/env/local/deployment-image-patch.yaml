@@ -8,5 +8,5 @@ spec:
     spec:
       containers:
       - name: website
-        image: host.minikube.internal:5000/o-p-n/website:latest
+        image: host.minikube.internal:12676/o-p-n/website:latest
         imagePullPolicy: Always
