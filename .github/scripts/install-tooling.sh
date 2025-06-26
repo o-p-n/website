@@ -6,17 +6,63 @@ loggit() {
   echo "$@" 1>&2
 }
 
+push_it() {
+  pushd "$@" > /dev/null
+}
+
+pop_it() {
+  popd > /dev/null
+}
+
 INSTALL_PATH="${INSTALL_PATH:-$HOME/bin}"
 
-DENO_VERSION="${DENO_VERSION:-2.0.0}"
+CLOUDFLARED_VERSION="${CLOUDFLARED:-2025.6.1}"
+DENO_VERSION="${DENO_VERSION:-2.3.6}"
 DEPLOYER_VERSION="${DEPLOYER_VERSION:-0.4.1}"
-TASKFILE_VERSION="${TASKFILE_VERSION:-3.35.1}"
-CRANE_VERSION="${CRANE_VERSION:-0.19.1}"
-KUBECTL_VERSION="${KUBECTL_VERSION:-1.28.3}"
+TASKFILE_VERSION="${TASKFILE_VERSION:-3.44.0}"
+CRANE_VERSION="${CRANE_VERSION:-0.20.6}"
+KUBECTL_VERSION="${KUBECTL_VERSION:-1.32.6}"
 
 # Platform variables
 PLATFORM_ARCH=$(uname -m)
 PLATFORM_OS=$(uname -s | tr '[:upper:]' '[:lower:]')
+
+function install_cloudflared() {
+  local version="${CLOUDFLARED_VERSION}"
+  local platform_os="${PLATFORM_OS}"
+  local platform_arch="${PLATFORM_ARCH}"
+  local compressed=""
+
+  case "${platform_arch}" in
+    "x86_64")
+      platform_arch="amd64"
+      ;;
+    "aarch64")
+      platform_arch="arm64"
+      ;;
+  esac
+
+  case "${platform_os}" in
+    "darwin")
+      compressed=".tgz"
+      ;;
+  esac
+
+  loggit "downloading cloudflared ${version:-latest} for ${platform_os}/${platform_arch} ..."
+
+  mkdir -p cloudflared && push_it cloudflared
+
+  gh --repo cloudflare/cloudflared release download \
+      --pattern "cloudflared-${platform_os}-${platform_arch}${compressed}" --clobber \
+      --output "cloudflared${compressed}" ${version}
+
+  if [[ "${compressed}" != "" ]] ; then
+    tar xzf "cloudflared${compressed}"
+  fi
+
+  loggit "... installing ..."
+  install cloudflared "${INSTALL_PATH}"
+}
 
 function install_deno() {
   local version="${DENO_VERSION}"
@@ -50,7 +96,7 @@ function install_deno() {
 
   loggit "downloading deno ${version:-latest} for ${platform_os}/${platform_arch} ..."
 
-  mkdir -p deno && pushd deno
+  mkdir -p deno && push_it deno
 
   # TODO verify checksum
   gh --repo denoland/deno release download \
@@ -61,7 +107,7 @@ function install_deno() {
   loggit "... installing ..."
   install deno "${INSTALL_PATH}"
 
-  popd
+  pop_it
 }
 
 function install_deployer() {
@@ -96,7 +142,7 @@ function install_deployer() {
 
   loggit "downloading o-p-n.deployer ${version:-latest} for ${platform_os}/${platform_arch} ..."
 
-  mkdir -p o-p-n.deployer && pushd o-p-n.deployer
+  mkdir -p o-p-n.deployer && push_it o-p-n.deployer
 
   # TODO verify checksum
   gh --repo o-p-n/deployer release download \
@@ -107,7 +153,7 @@ function install_deployer() {
   loggit "... installing ..."
   install o-p-n.deployer "${INSTALL_PATH}"
 
-  popd
+  pop_it
 }
 
 function install_taskfile() {
@@ -132,7 +178,7 @@ function install_taskfile() {
 
   loggit "downloading task ${version:-latest} for ${platform_os}/${platform_arch} ..."
 
-  mkdir -p task && pushd task
+  mkdir -p task && push_it task
 
   gh --repo go-task/task release download \
       --pattern "task_${platform_os}_${platform_arch}.tar.gz" --clobber \
@@ -201,15 +247,16 @@ function install_kubectl() {
 }
 
 working_dir=$(mktemp -d)
-pushd ${working_dir}
+push_it ${working_dir}
 
+install_cloudflared
 install_deno
 install_deployer
 install_taskfile
 install_crane
 install_kubectl
 
-popd
+pop_it
 rm -rf ${working_dir}
 
 loggit "... DONE"
