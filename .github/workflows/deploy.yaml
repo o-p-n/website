@@ -11,13 +11,15 @@ jobs:
   deploy-k8s:
     name: Deploy image
     runs-on: ubuntu-22.04
+    env:
+      TUNNEL_SERVICE_TOKEN_ID: "{{ secrets.CF_SERVICE_AUTH_KEY }}"
+      TUNNEL_SERVICE_TOKEN_SECRET: "{{ secrets.CF_SERVICE_AUTH_SECRET }}"
     strategy:
       matrix:
         include:
-          - environment: intranet
-            hostname: outer-planes.casa
           - environment: public
             hostname: outer-planes.net
+            kubeconfig: {{ secrets.KUBECONFIG_PUBLIC }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,23 +31,18 @@ jobs:
         env:
           INSTALL_PATH: /usr/local/bin
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Prepare SSH
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOYMENT_SSH_KEY }}" > ~/.ssh/deploy.key
-          chmod 600 ~/.ssh/deploy.key
-          cat << ---EOF--- > ~/.ssh/config
-          Host *
-            User ${{ secrets.DEPLOYMENT_SSH_USERNAME }}
-            IdentityFile ~/.ssh/deploy.key
-            StrictHostKeyChecking no
-          ---EOF---
+
+      - name: Start tunnel
+        uses: JarvusInnovations/background-action@2428e7b970a846423095c79d43f759abf979a635
+        with:
+          run: |
+            cloudflared access tcp --hostname=kubectl.outer-planes.casa --url localhost:9876
+          wait-on: |
+            tcp:localhost:9876
       - name: Prepare Kubectl
         run: |
           mkdir -p ~/.kube
-          ssh ${{ matrix.hostname }} /snap/bin/microk8s config \
-            | sed -e 's/server: https:\/\/.*:/server: https:\/\/${{ matrix.hostname }}:/' \
-            > ~/.kube/config
+          echo -n "{{ matrix.kubeconfig }}" > ~/.kube/config
       - name: Deploy ${{ matrix.environment }}
         run: |
           o-p-n.deployer apply --env ${{ matrix.environment }}

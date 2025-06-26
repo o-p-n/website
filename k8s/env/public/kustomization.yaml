@@ -7,4 +7,3 @@ resources:
 patches:
   - path: ./route-hostnames-patch.yaml
   - path: ./deployment-image-patch.yaml
-
