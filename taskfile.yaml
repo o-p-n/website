@@ -85,10 +85,6 @@ tasks:
     deps:
       - task: kustomize.env
         vars:
-          ENV: intranet
-          K8S_REGISTRY: '{{ .K8S_REGISTRY }}'
-      - task: kustomize.env
-        vars:
           ENV: public
           K8S_REGISTRY: '{{ .K8S_REGISTRY }}'
 
