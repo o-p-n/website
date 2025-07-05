@@ -7,11 +7,6 @@ on:
     paths:
       - "k8s/**"
 
-env:
-  TARGET_ENVIRONMENT: public
-  TARGET_HOSTNAME: outer-planes.net
-  TARGET_KUBECONFIG: "{{ secrets.KUBECONFIG_PUBLIC }}"
-
 jobs:
   deploy-k8s:
     name: Deploy image
@@ -33,9 +28,9 @@ jobs:
       - name: Prepare Kubectl
         run: |
           mkdir -p ~/.kube
-          echo -n "{{ env.TARGET_KUBECONFIG }}" > ~/.kube/config
-      - name: Deploy ${{ env.TARGET_HOSTNAME }}
+          echo -n "{{ secrets.KUBECONFIG_PUBLIC }}" > ~/.kube/config
+      - name: Deploy public
         run: |
           cloudflared access tcp --hostname=kubectl.outer-planes.casa --url localhost:9876 &
-          o-p-n.deployer apply --env ${{ env.TARGET_ENVIRONMENT }}
+          o-p-n.deployer apply --env public
           exit 0
