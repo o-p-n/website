@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: website-monitor
+  namespace: website
+  labels:
+    monitoring: website
+spec:
+  selector:
+    matchLabels:
+      app: website
+  podTargetLabels:
+    - app
+  podMetricsEndpoints:
+    - portNumber: 9090
+      path: "/metrics"
+      interval: 10s

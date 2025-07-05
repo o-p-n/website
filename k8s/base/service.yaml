@@ -7,7 +7,8 @@ spec:
   selector: 
     app: website
   ports:
-    - port: 4000
+    - name: website
+      port: 4000
       targetPort: 4000
 ---
 apiVersion: gateway.networking.k8s.io/v1beta1
