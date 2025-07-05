@@ -18,7 +18,6 @@ spec:
     spec:
       containers:
       - name: website
-        # image:  host.minikube.internal:12676/o-p-n/website:latest
         # image:  ghcr.io/o-p-n/website@sha256:2f6398d11eb0d37ce38ff7f7851890d147079dbfadb79da598f02f66e3c67e67
         imagePullPolicy: IfNotPresent
         resources:
@@ -30,3 +29,5 @@ spec:
             cpu: "200m"
         ports:
         - containerPort: 4000
+        - name: web-metrics
+          containerPort: 9090

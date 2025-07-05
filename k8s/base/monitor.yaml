@@ -1,0 +1,17 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: website-monitor
+  namespace: website
+  labels:
+    monitoring: website
+spec:
+  jobLabel: website-stats
+  targetLabels:
+    - app
+  selector:
+    matchLabels:
+      app: website
+  endpoints:
+    - port: web-metrics
+      interval: 10s

@@ -7,8 +7,12 @@ spec:
   selector: 
     app: website
   ports:
-    - port: 4000
+    - name: website
+      port: 4000
       targetPort: 4000
+    - name: web-metrics
+      port: 9090
+      targetPort: 9090
 ---
 apiVersion: gateway.networking.k8s.io/v1beta1
 kind: HTTPRoute
