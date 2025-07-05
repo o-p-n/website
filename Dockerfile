@@ -1,4 +1,4 @@
-FROM ghcr.io/o-p-n/serveit:152c4566d68504350b2de8cac2037c98f20125e6@sha256:7522db2851d852a933857d39b3276c088656dc45738bedab158f1514518a9808 AS website
+FROM ghcr.io/o-p-n/serveit:2b5e3644cb327217ba33f5695c83ed370b89de29@sha256:89fb4412fb9c587e5b8c9e11adb3cb938c7f5e2cc29bc283fe10aff631c6af0c
 LABEL org.opencontainers.image.source="https://github.com/o-p-n/website"
 
 COPY ./_site /app/web
