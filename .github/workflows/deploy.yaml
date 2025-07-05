@@ -10,7 +10,7 @@ on:
 env:
   TARGET_ENVIRONMENT: public
   TARGET_HOSTNAME: outer-planes.net
-  TARGET_KUBECONFIG: secrets.KUBECONFIG_PUBLIC
+  TARGET_KUBECONFIG: "{{ secrets.KUBECONFIG_PUBLIC }}"
 
 jobs:
   deploy-k8s:
@@ -30,19 +30,12 @@ jobs:
         env:
           INSTALL_PATH: /usr/local/bin
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Start tunnel
-        uses: JarvusInnovations/background-action@2428e7b970a846423095c79d43f759abf979a635
-        with:
-          run: |
-            cloudflared access tcp --hostname=kubectl.outer-planes.casa --url localhost:9876
-          wait-on: |
-            tcp:localhost:9876
       - name: Prepare Kubectl
         run: |
           mkdir -p ~/.kube
           echo -n "{{ env.TARGET_KUBECONFIG }}" > ~/.kube/config
       - name: Deploy ${{ env.TARGET_HOSTNAME }}
         run: |
+          cloudflared access tcp --hostname=kubectl.outer-planes.casa --url localhost:9876 &
           o-p-n.deployer apply --env ${{ env.TARGET_ENVIRONMENT }}
           exit 0
