@@ -17,17 +17,22 @@ spec:
         app: website
     spec:
       containers:
-      - name: website
-        # image:  ghcr.io/o-p-n/website@sha256:2f6398d11eb0d37ce38ff7f7851890d147079dbfadb79da598f02f66e3c67e67
-        imagePullPolicy: IfNotPresent
-        resources:
-          requests:
-            memory: "32Mi"
-            cpu: "50m"
-          limits:
-            memory: "64Mi"
-            cpu: "200m"
-        ports:
-        - containerPort: 4000
-        - name: web-metrics
-          containerPort: 9090
+        - name: website
+          # image:  ghcr.io/o-p-n/website@sha256:2f6398d11eb0d37ce38ff7f7851890d147079dbfadb79da598f02f66e3c67e67
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              memory: "32Mi"
+              cpu: "50m"
+            limits:
+              memory: "64Mi"
+              cpu: "200m"
+          ports:
+            - containerPort: 4000
+            - containerPort: 9090
+          livenessProbe:
+            httpGet:
+              port: 9090
+              path: /health
+            initialDelaySeconds: 5
+            periodSeconds: 5
