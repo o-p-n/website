@@ -7,6 +7,11 @@ on:
     paths:
       - "k8s/**"
 
+env:
+  TARGET_ENVIRONMENT: public
+  TARGET_HOSTNAME: outer-planes.net
+  TARGET_KUBECONFIG: secrets.KUBECONFIG_PUBLIC
+
 jobs:
   deploy-k8s:
     name: Deploy image
@@ -14,12 +19,6 @@ jobs:
     env:
       TUNNEL_SERVICE_TOKEN_ID: "{{ secrets.CF_SERVICE_AUTH_KEY }}"
       TUNNEL_SERVICE_TOKEN_SECRET: "{{ secrets.CF_SERVICE_AUTH_SECRET }}"
-    strategy:
-      matrix:
-        include:
-          - environment: public
-            hostname: outer-planes.net
-            kubeconfig: {{ secrets.KUBECONFIG_PUBLIC }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -42,8 +41,8 @@ jobs:
       - name: Prepare Kubectl
         run: |
           mkdir -p ~/.kube
-          echo -n "{{ matrix.kubeconfig }}" > ~/.kube/config
-      - name: Deploy ${{ matrix.environment }}
+          echo -n "{{ env.TARGET_KUBECONFIG }}" > ~/.kube/config
+      - name: Deploy ${{ env.TARGET_HOSTNAME }}
         run: |
-          o-p-n.deployer apply --env ${{ matrix.environment }}
+          o-p-n.deployer apply --env ${{ env.TARGET_ENVIRONMENT }}
           exit 0
