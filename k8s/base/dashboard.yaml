@@ -27,7 +27,7 @@ data:
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 0,
-      "id": 33,
+      "id": 35,
       "links": [],
       "panels": [
         {
@@ -253,7 +253,7 @@ data:
             {
               "disableTextWrap": false,
               "editorMode": "builder",
-              "expr": "avg by(quantile) (serveit_txn_duration{app=\"website\"})",
+              "expr": "avg by(quantile) (serveit_txn_duration{app=\"website\", quantile!=\"1.0\"})",
               "fullMetaSearch": false,
               "includeNullMetadata": true,
               "legendFormat": "__auto",
@@ -345,6 +345,9 @@ data:
                 "A": {
                   "stat": "sum",
                   "timeField": "Time"
+                },
+                "Requests": {
+                  "timeField": "Time"
                 }
               }
             },
@@ -355,8 +358,8 @@ data:
                 "fields": {},
                 "sort": [
                   {
-                    "desc": false,
-                    "field": "Trend #A"
+                    "desc": true,
+                    "field": "Trend #Requests"
                   }
                 ]
               }
@@ -378,40 +381,14 @@ data:
           "fieldConfig": {
             "defaults": {
               "color": {
-                "mode": "palette-classic"
+                "mode": "thresholds"
               },
               "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "",
-                "axisPlacement": "auto",
-                "barAlignment": 0,
-                "barWidthFactor": 0.6,
-                "drawStyle": "line",
-                "fillOpacity": 0,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
                 },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "auto",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
+                "inspect": false
               },
               "mappings": [],
               "thresholds": {
@@ -437,34 +414,60 @@ data:
           },
           "id": 5,
           "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": false
             },
-            "tooltip": {
-              "hideZeros": false,
-              "mode": "single",
-              "sort": "none"
-            }
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": false,
+                "displayName": "status"
+              }
+            ]
           },
           "pluginVersion": "12.0.0",
           "targets": [
             {
               "disableTextWrap": false,
               "editorMode": "builder",
-              "expr": "avg by(status) (increase(serveit_txn_responses_total{app=\"website\"}[1h]))",
+              "expr": "max by(status) (serveit_txn_responses_total{app=\"website\"})",
               "fullMetaSearch": false,
               "includeNullMetadata": true,
               "legendFormat": "__auto",
               "range": true,
-              "refId": "A",
+              "refId": "Responses",
               "useBackend": false
             }
           ],
           "title": "Responses by status",
-          "type": "timeseries"
+          "transformations": [
+            {
+              "id": "timeSeriesTable",
+              "options": {
+                "A": {
+                  "timeField": "Time"
+                }
+              }
+            },
+            {
+              "id": "sortBy",
+              "options": {
+                "fields": {},
+                "sort": [
+                  {
+                    "field": "status"
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "table"
         }
       ],
       "preload": false,
@@ -476,12 +479,12 @@ data:
         "list": []
       },
       "time": {
-        "from": "now-3h",
+        "from": "now-24h",
         "to": "now"
       },
       "timepicker": {},
       "timezone": "browser",
       "title": "serveit / Website",
-      "uid": "d9c9a444-d0c1-4569-a2d1-deb86a6bfd27",
-      "version": 1
+      "uid": "b3e99076-9e3d-4960-b6f1-38e68d2fc9d5",
+      "version": 2
     }
