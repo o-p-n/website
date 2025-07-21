@@ -253,7 +253,7 @@ data:
             {
               "disableTextWrap": false,
               "editorMode": "builder",
-              "expr": "avg by(quantile) (serveit_txn_duration{app=\"website\"})",
+              "expr": "avg by(quantile) (serveit_txn_duration{app=\"website\", quantile!=\"1.0\"})",
               "fullMetaSearch": false,
               "includeNullMetadata": true,
               "legendFormat": "__auto",
@@ -331,7 +331,7 @@ data:
             {
               "disableTextWrap": false,
               "editorMode": "builder",
-              "expr": "max by(path) (increase(serveit_txn_requests_total{app=\"website\"}[24h]))",
+              "expr": "sum by(path) (increase(serveit_txn_requests_total{app=\"website\"}[1h]))",
               "fullMetaSearch": false,
               "includeNullMetadata": true,
               "legendFormat": "__auto",
@@ -433,7 +433,7 @@ data:
             {
               "disableTextWrap": false,
               "editorMode": "builder",
-              "expr": "max by(status) (increase(serveit_txn_responses_total{app=\"website\"}[24h]))",
+              "expr": "sum by(status) (increase(serveit_txn_responses_total{app=\"website\"}[1h]))",
               "fullMetaSearch": false,
               "includeNullMetadata": true,
               "legendFormat": "__auto",
@@ -484,5 +484,5 @@ data:
       "timezone": "utc",
       "title": "serveit / Website",
       "uid": "d9c9a444-d0c1-4569-a2d1-deb86a6bfd27",
-      "version": 2
+      "version": 3
     }
