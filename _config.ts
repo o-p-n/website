@@ -13,8 +13,8 @@ site.use(sass({
   format: "expanded",
 }));
 
-site.copyRemainingFiles();
-site.copy("assets");
-site.copy(".well-known");
+site.add("/styles");
+site.add("/assets");
+site.add("/.well-known");
 
 export default site;

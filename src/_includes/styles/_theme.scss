@@ -16,6 +16,7 @@ $color-callout-warning: #ff6a65;
   --font-normal: Verdana, Arial, sans-serif;
   --font-heading: Diablo, Verdana, Arial, sans-serif;
   --font-monospace: "Courier Prime", "Courier New", monospace;
+  --font-symbols: Phosphor-Fill
 
   // default to light-mode
   color-scheme: light;
@@ -101,4 +102,11 @@ $color-callout-warning: #ff6a65;
   src: url("/assets/courier-prime-bold-italic.ttf");
   font-style: italic;
   font-weight: bold;
+}
+
+@font-face {
+  font-family: "Phosphor-Fill";
+  src: url("/assets/Phosphor-Fill.ttf") format("truetype");
+  font-style: normal;
+  font-weight: normal;
 }
