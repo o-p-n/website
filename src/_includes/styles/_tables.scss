@@ -1,8 +1,9 @@
 table {
   border: 1px solid var(--color-border);
-  margin: 0.5rem;
+  margin: 1rem 0px;
   padding: 0;
   border-spacing: 0;
+  width: 100%;
 
   td, th {
     padding: 0.25rem 0.5rem;
@@ -11,17 +12,21 @@ table {
   thead {
     th {
       border-bottom: 1px solid var(--color-border);
-      color: var(--color-table-header-text);
-      background-color: var(--color-table-header-background);
+      color: var(--color-highlight-text);
+      background-color: var(--color-border);
     }
   }
 
   tbody {
+    td {
+      border-block: 1px solid var(--color-border);
+    }
+
     tr {
-      background-color: var(--table-data-bg-odd);
+      background-color: var(--color-table-row-background-odd);
 
       &:nth-child(even) {
-        background-color: var(--color-table-data-background-even);
+        background-color: var(--color-table-row-background-even);
       }
     }
   }
