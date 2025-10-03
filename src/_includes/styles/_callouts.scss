@@ -1,0 +1,42 @@
+@mixin colorize-callout($type) {
+  &.callout-#{$type} {
+    border-color: var(--color-callout-#{$type});
+
+    .callout-title {
+      color: var(--color-callout-#{$type});
+    }
+  }
+}
+
+.callout {
+  .callout-title {
+    height: 1.25rem;
+    line-height: 1.25rem;
+  }
+  .callout-symbol {
+    font-family: var(--font-symbols);
+    font-weight: normal;
+    vertical-align: bottom;
+    margin-inline-end: 0.5rem;
+  }
+
+  &.callout-note {
+    @include colorize-callout("note");
+  }
+
+  &.callout-tip {
+    @include colorize-callout("tip");
+  }
+
+  &.callout-important {
+    @include colorize-callout("important");
+  }
+
+  &.callout-warning {
+    @include colorize-callout("warning");
+  }
+
+  &.callout-caution {
+    @include colorize-callout("caution");
+ }
+}

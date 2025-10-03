@@ -1,8 +1,9 @@
 @use "./headings";
+@use "./inline";
 @use "./block";
 @use "./tables";
-@use "./inline";
 @use "./footnote";
+@use "./callouts";
 
 @use "./theme";
 
