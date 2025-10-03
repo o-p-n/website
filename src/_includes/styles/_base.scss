@@ -1,12 +1,3 @@
-@use "./headings";
-@use "./inline";
-@use "./block";
-@use "./tables";
-@use "./footnote";
-@use "./callouts";
-
-@use "./theme";
-
 *, ::after, ::before {
   box-sizing: border-box;
 }
@@ -15,4 +6,8 @@ html, body {
   font: 12pt var(--font-normal);
   color: var(--color-text);
   background-color: var(--color-background);
+}
+
+body {
+  margin: 1rem;
 }
