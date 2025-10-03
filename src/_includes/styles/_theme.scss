@@ -1,73 +1,79 @@
-$color-primary-dark: #0c0c0c;
-$color-secondary-dark: #481e14;
-$color-tertiary-dark: #9b3922;
-$color-highlight-dark: #f2613f;
+$black: rgb(0, 0, 0);
+$gray-6: rgb(16, 16, 16);
+$gray-12: rgb(30, 30, 30);
+$gray-25: rgb(64, 64, 64);
+$gray-50: rgb(128, 128, 128);
+$gray-75: rgb(192, 192, 192);
+$gray-87: rgb(223, 223, 223);
+$gray-94: rgb(240, 240, 240);
+$white: rgb(255, 255, 255);
 
-$color-primary-light: #e3fef7;
-$color-secondary-light: #77b0aa;
-$color-tertiary-light: #135d66;
-$color-highlight-light: #003c43;
+$red: hsl(0, 100%, 66%);
+$blue: hsl(240, 100%, 50%);
+$green: hsl(120, 100%, 30%);
+$purple: hsl(300, 100%, 25%);
+$orange: hsl(39, 82%, 50%);
+$yellow: hsl(60, 67%, 50%);
 
-$color-callout-info:#b0a8e4;
-$color-callout-warning: #ff6a65;
+$color-light-primary-fg: $black;
+$color-light-primary-bg: $white;
+$color-light-secondary-fg: $gray-12;
+$color-light-highlight-fg: $gray-25;
+$color-light-highlight-bg: $gray-87;
+$color-light-border: $gray-75;
+
+$color-dark-primary-fg: $white;
+$color-dark-primary-bg: $black;
+$color-dark-secondary-fg: $gray-87;
+$color-dark-highlight-fg: $gray-75;
+$color-dark-highlight-bg: $gray-12;
+$color-dark-border: $gray-25;
 
 :root {
   // fonts
   --font-normal: Verdana, Arial, sans-serif;
-  --font-heading: Diablo, Verdana, Arial, sans-serif;
-  --font-monospace: "Courier Prime", "Courier New", monospace;
-  --font-symbols: Phosphor-Fill
+  --font-heading: Diablo;
+  --font-monospace: "Courier Prime";
+  --font-symbols: Phosphor-Fill;
 
   // default to light-mode
   color-scheme: light;
 
-  --color-text: #{$color-primary-dark};
-  --color-background: #{$color-primary-light};
-  --color-border: #{$color-highlight-light};
+  --color-text: $color-light-primary-fg;
+  --color-background: #{$color-light-primary-bg};
+  --color-border: #{$color-light-border};
 
-  --color-link: #{$color-secondary-dark};
-  --color-link-hover: #{$color-highlight-dark};
+  --color-link: #{$color-light-secondary-fg};
+  --color-link-hover: #{$color-light-secondary-fg};
 
-  --color-highlight-text: #{$color-secondary-dark};
-  --color-highlight-background: #{$color-secondary-light};
+  --color-highlight-text: #{$color-light-highlight-fg};
+  --color-highlight-background: #{$color-light-highlight-bg};
 
-  --color-table-header-background: #{$color-highlight-light};
-  --color-table-header-text: #{$color-primary-light};
+  --color-table-row-background-even: #{$gray-87};
+  --color-table-row-background-odd: #{$gray-94};
 
-  --color-table-data-bg-odd: #{$color-primary-light};
-  --color-table-data-background-even: #{$color-secondary-light};
+  --color-callout-note: #{$blue};
+  --color-callout-tip: #{$green};
+  --color-callout-important: #{$orange};
+  --color-callout-warning: #{$yellow};
+  --color-callout-caution: #{$red};
 
-  --color-callout-background: #{$color-tertiary-light};
-  --color-callout-text: #{$color-primary-light};
-
-  --color-info-background: #{$color-callout-info};
-  --color-info-text: #{$color-primary-light};
-  
-  --color-warning-background: #{$color-callout-warning};
-  --color-warning-text: #{$color-primary-light};
-  
   // override in dark-mode
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
 
-    --color-text: #{$color-primary-light};
-    --color-background: #{$color-primary-dark};
-    --color-border: #{$color-tertiary-dark};
+    --color-text: #{$color-dark-primary-fg};
+    --color-background: #{$color-dark-primary-bg};
+    --color-border: #{$color-dark-border};
 
-    --color-link: #{$color-secondary-light};
-    --color-link-hover: #{$color-primary-light};
+    --color-link: #{$color-dark-secondary-fg};
+    --color-link-hover: #{$color-dark-secondary-fg};
 
-    --color-highlight-text: #{$color-secondary-light};
-    --color-highlight-background: #{$color-secondary-dark};
-    
-    --color-table-header-background: #{$color-tertiary-dark};
-    --color-table-header-text: #{$color-primary-dark};
-  
-    --color-table-data-bg-odd: #{$color-primary-dark};
-    --color-table-data-background-even: #{$color-secondary-dark};
-  
-    --color-callout-background: #{$color-tertiary-dark};
-    --color-callout-text: #{$color-primary-dark};
+    --color-highlight-text: #{$color-dark-highlight-fg};
+    --color-highlight-background: #{$color-dark-highlight-bg};
+
+    --color-table-row-background-even: #{$gray-12};
+    --color-table-row-background-odd: #{$gray-6};
   }
 }
 
