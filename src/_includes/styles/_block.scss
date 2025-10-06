@@ -36,3 +36,8 @@ dl {
     }
   }
 }
+
+ol>li::marker {
+  font-family: var(--font-heading);
+  font-weight: bold;
+}
