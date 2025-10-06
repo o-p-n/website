@@ -25,19 +25,29 @@ pre {
 }
 
 dl {
+  margin-block: 1rem;
+
   >dt {
     font-weight: bold;
+    margin-block-start: 0.5rem;
   }
   >dd {
     margin: 0px;
+    margin-inline-start: 1rem;
 
     &::before {
       content: "\00a0↪\00a0";
+      font-weight: bold;
     }
   }
 }
+ol, ul {
+  margin-block: 1rem;
+}
 
-ol>li::marker {
-  font-family: var(--font-heading);
-  font-weight: bold;
+ol {
+  li::marker {
+    font-family: var(--font-heading);
+    font-weight: bold;
+  }
 }

@@ -89,7 +89,12 @@ sem malesuada magna mollis euismod.
 > Donec ullamcorper nulla non metus auctor fringilla. Donec ullamcorper nulla non metus auctor fringilla. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Nulla vitae elit libero, a pharetra augue. Maecenas faucibus mollis interdum. Cras mattis consectetur purus sit amet fermentum. Cras mattis consectetur purus sit amet fermentum.
 
 Term 1
-~   Definition A
+: Definition A
+: Definition B
+
+Term 2
+: Definition 2.A
+
 
 # Tables
 
@@ -116,6 +121,6 @@ Term 1
 
 2. Nullam id dolor id nibh ultricies vehicula ut id elit.
 
-    a. Maecenas sed diam eget risus varius blandit sit amet non magna.
+   1. Maecenas sed diam eget risus varius blandit sit amet non magna.
 
 3. Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
