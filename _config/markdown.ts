@@ -1,5 +1,6 @@
-import footnote from "markdown-it-footnote";
 import callouts from "markdown-it-callouts";
+import sections from "markdown-it-header-sections";
+import footnotes from "lume-md/footnotes/mod.ts";
 
 const markdown = {
   plugins: [
@@ -15,7 +16,8 @@ const markdown = {
         "caution": "\ue4e4",
       },
     }],
-    footnote,
+    sections,
+    footnotes,
   ],
 };
 

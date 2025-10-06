@@ -3,8 +3,10 @@
     "@date-fns/utc": "npm:@date-fns/utc@^2.1.1",
     "date-fns": "npm:date-fns@^4.1.0",
     "lume/": "https://deno.land/x/lume@v3.0.11/",
+    "lume-md/": "https://deno.land/x/lume_markdown_plugins@v0.9.0/",
     "markdown-it-callouts": "npm:markdown-it-callouts@^1.1.0",
-    "markdown-it-footnote": "npm:markdown-it-footnote@^4.0.0"
+    "markdown-it-footnote": "npm:markdown-it-footnote@^4.0.0",
+    "markdown-it-header-sections": "npm:markdown-it-header-sections@^1.0.0"
   },
   "tasks": {
     "lume": "echo \"import 'lume/cli.ts'\" | deno run -A -",

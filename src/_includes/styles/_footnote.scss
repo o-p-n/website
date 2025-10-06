@@ -2,6 +2,21 @@ li.footnote-item {
   font-size: 0.8rem;
 }
 
-hr.footnotes-sep {
-  border-width: 0.25rem;
+section.footnotes {
+  hr.footnotes-sep {
+    border-width: 0.25rem;
+  }
+
+  span.footnote-label {
+    float: left;
+    margin-inline-end: 0.5rem;
+    font-weight: bold;
+  }
+
+  > ul {
+    list-style-type: none;
+    padding: 0px;
+    margin-inline-start: 1rem;
+  }
 }
+

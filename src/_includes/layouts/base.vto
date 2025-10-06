@@ -9,5 +9,19 @@
   </head>
   <body>
     {{ content }}
+
+    {{ if footnotes.length }}
+    <section class="footnotes">
+      <hr class="footnote-sep" />
+      <ul>
+        {{ for note of footnotes }}
+        <li class="footnote-item" id={{ note.id }}>
+          <span class="footnote-label"><a href=#{{ note.refId }}>[{{ note.label }}</a>]:</span>
+          {{ note.content }}
+        </li>
+        {{ /for }}
+      </ul>
+    </section>
+    {{ /if }}
   </body>
 </html>
