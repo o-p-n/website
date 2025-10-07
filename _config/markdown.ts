@@ -1,10 +1,13 @@
 import callouts from "markdown-it-callouts";
 import sections from "markdown-it-header-sections";
-import footnotes from "lume-md/footnotes/mod.ts";
+import footnotes from "lume-md/footnotes.ts";
+import toc from "lume-md/toc.ts";
 
-const markdown = {
-  plugins: [
-    [callouts, {
+import Site from "lume/core/site.ts";
+
+export default function md() {
+  return (site: Site) => {
+    site.hooks.addMarkdownItPlugin(callouts, {
       defaultElementType: "blockquote",
       calloutTitleElementType: "h6",
       emptyTitleFallback: "match-type",
@@ -15,10 +18,12 @@ const markdown = {
         "warning": "\ue4e0",
         "caution": "\ue4e4",
       },
-    }],
-    sections,
-    footnotes,
-  ],
-};
+    });
+    site.hooks.addMarkdownItPlugin(sections);
 
-export default markdown;
+    site.use(footnotes());
+    site.use(toc({
+      level: 1,
+    }));
+  };
+}

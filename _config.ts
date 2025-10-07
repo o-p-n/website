@@ -6,8 +6,9 @@ import markdown from "./_config/markdown.ts";
 
 const site = lume({
   src: "src",
-}, { markdown });
+});
 
+site.use(markdown());
 site.use(utcdate());
 site.use(sass({
   format: "expanded",
