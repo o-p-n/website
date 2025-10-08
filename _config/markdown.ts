@@ -24,6 +24,7 @@ export default function md() {
     site.use(footnotes());
     site.use(toc({
       level: 1,
+      anchor: false,
     }));
   };
 }

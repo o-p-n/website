@@ -2,3 +2,4 @@ layout: layouts/base.vto
 date: Git Last Modified
 site:
   title: O U T E R - P L A N E S
+  tocMaxDepth: 3

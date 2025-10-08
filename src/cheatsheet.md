@@ -1,5 +1,6 @@
 ---
 title: Cheat Sheet
+layout: layouts/article.vto
 ---
 
 # Heading One

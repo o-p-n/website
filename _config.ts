@@ -8,6 +8,8 @@ const site = lume({
   src: "src",
 });
 
+site.mergeKey("site", "object");
+
 site.use(markdown());
 site.use(utcdate());
 site.use(sass({

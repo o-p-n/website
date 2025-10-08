@@ -1,0 +1,25 @@
+nav.toc {
+  .label {
+    font-weight: bold;
+  }
+  ol {
+    margin-inline: 0px;
+    counter-reset: item;
+
+    ol {
+      margin: 0px;
+      padding: 0px;
+    }
+
+    li {
+      display: block;
+
+      &:before {
+        content: counters(item, ".") " ";
+        counter-increment: item;
+        font-family: var(--font-heading);
+      }
+    }
+  }  
+}
+
