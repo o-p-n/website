@@ -117,3 +117,6 @@ $color-dark-border: $gray-25;
   font-style: normal;
   font-weight: normal;
 }
+
+@import url("/styles/highlight-light.css") (prefers-color-scheme: light);
+@import url("/styles/highlight-dark.css") (prefers-color-scheme: dark);

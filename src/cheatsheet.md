@@ -64,6 +64,19 @@ facilisis in, egestas eget quam. Nulla vitae elit libero, a pharetra augue. Etia
 sem malesuada magna mollis euismod.
 ```
 
+```yaml
+# some keys
+keys:
+    val1: value one
+    val2: value two
+    val3: Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+# some lists
+lists:
+    - abc
+    - def
+    -ghi
+```
+
 > [!note]
 > Cras mattis consectetur purus sit amet fermentum. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.
 >
