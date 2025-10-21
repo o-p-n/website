@@ -3,11 +3,12 @@
   <head>
     <title>{{if title }}{{title}} :: {{ /if }}{{ site.title }}</title>
     <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta itemprop="created" content="{{ date |> utcdate }}"/>
     <link rel="stylesheet" href="/styles/main.css" />
     <style>{{ style }}</style>
   </head>
   <body>
-    {{ include "./content.vto" { content } }}
+    {{ content }}
   </body>
 </html>

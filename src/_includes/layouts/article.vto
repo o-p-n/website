@@ -7,6 +7,8 @@ layout: ./base.vto
 
 {{ include "./toc/nav.vto" }}
 
-<hr />
+<section class="content">
+  {{ content }}
 
-{{ content }}
+  {{ include "./footnotes.vto" }}
+</section>
