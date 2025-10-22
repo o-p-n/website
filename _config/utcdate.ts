@@ -1,5 +1,5 @@
-import { format } from "npm:date-fns@3.6.0";
-import { UTCDate } from "npm:@date-fns/utc@1.2.0";
+import { format } from "date-fns";
+import { UTCDate } from "@date-fns/utc";
 
 import Site from "lume/core/site.ts";
 
