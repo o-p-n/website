@@ -1,0 +1,24 @@
+{{ function level(items, depth = 1) }}
+  {{ if items.length }}
+  <ol>
+  {{ for item of items }}
+  <li>
+    <a href="#{{ item.slug}}">{{ item.text }}</a>
+
+    {{ level(item.children, depth + 1) }}
+  </li>
+  {{ /for }}
+</ol>
+
+{{ /if }}
+{{ /function }}
+
+{{ if toc.length }}
+
+<nav class="toc">
+  <div class="label">Table of Contents</div>
+
+  {{ level(toc) }}
+</nav>
+
+{{ /if }}
