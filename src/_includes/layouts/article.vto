@@ -5,10 +5,10 @@ layout: ./base.vto
   <h1 class="title">{{ title }}</h1>
 </header>
 
-{{ include "./toc.vto" }}
+{{ include "../partials/toc.vto" }}
 
 <section class="content">
   {{ content }}
 
-  {{ include "./footnotes.vto" }}
+  {{ include "../partials/footnotes.vto" }}
 </section>
