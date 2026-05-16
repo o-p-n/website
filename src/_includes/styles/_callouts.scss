@@ -1,18 +1,11 @@
-@mixin colorize-callout($type) {
-  &.callout-#{$type} {
-    border-color: var(--color-callout-#{$type});
-
-    .callout-title {
-      color: var(--color-callout-#{$type});
-    }
-  }
-}
-
 .callout {
+  border-color: var(--int-callout-color);
+
   .callout-title {
     height: 1.25rem;
     font: normal 1.25rem var(--font-heading) !important;
     line-height: 1.25rem;
+    color: var(--int-callout-color);
   }
   .callout-symbol {
     font-family: var(--font-symbols);
@@ -22,22 +15,22 @@
   }
 
   &.callout-note {
-    @include colorize-callout("note");
+    --int-callout-color: var(--color-callout-note);
   }
 
   &.callout-tip {
-    @include colorize-callout("tip");
+    --int-callout-color: var(--color-callout-tip);
   }
 
   &.callout-important {
-    @include colorize-callout("important");
+    --int-callout-color: var(--color-callout-important);
   }
 
   &.callout-warning {
-    @include colorize-callout("warning");
+    --int-callout-color: var(--color-callout-warning);
   }
 
   &.callout-caution {
-    @include colorize-callout("caution");
+    --int-callout-color: var(--color-callout-caution);
  }
 }

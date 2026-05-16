@@ -7,7 +7,7 @@ import utcdate from "./_config/utcdate.ts";
 import markdown from "./_config/markdown.ts";
 
 const site = lume({
-  src: "src",
+  src: "./src",
 });
 
 site.mergeKey("site", "object");

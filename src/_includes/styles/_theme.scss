@@ -13,7 +13,7 @@ $blue: hsl(240, 100%, 50%);
 $green: hsl(120, 100%, 30%);
 $purple: hsl(300, 100%, 25%);
 $orange: hsl(39, 82%, 50%);
-$yellow: hsl(60, 67%, 50%);
+$yellow: hsl(82, 67%, 50%);
 
 $color-light-primary-fg: $black;
 $color-light-primary-bg: $white;
@@ -52,9 +52,9 @@ $color-dark-border: $gray-25;
   --color-table-row-background-even: #{$gray-87};
   --color-table-row-background-odd: #{$gray-94};
 
-  --color-callout-note: #{$blue};
+  --color-callout-note: #{$gray-50};
   --color-callout-tip: #{$green};
-  --color-callout-important: #{$orange};
+  --color-callout-important: #{$blue};
   --color-callout-warning: #{$yellow};
   --color-callout-caution: #{$red};
 
